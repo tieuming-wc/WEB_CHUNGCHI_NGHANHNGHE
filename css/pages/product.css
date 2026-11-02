@@ -1,0 +1,23 @@
+/* ============================================================
+   FILE: css/pages/product.css – Chi tiết sản phẩm, đánh giá, ô số lượng, biểu mẫu đăng sản phẩm
+   ============================================================ */
+.pd-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin: 18px 0 28px; }
+.pd-gallery .pd-main { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); background: #efe5d0; }
+.pd-gallery .thumbs { margin-top: 10px; }
+.pd-price { font-size: 1.8rem; color: var(--clay); font-weight: 700; margin: 8px 0; }
+.variant-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px; }
+.chip { padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); cursor: pointer; font: inherit; }
+.chip:hover { border-color: var(--clay); }
+.chip.active, .chip[aria-pressed='true'] { background: var(--clay); color: #fff; border-color: var(--clay); }
+.chip[disabled], .chip.disabled { opacity: .45; text-decoration: line-through; cursor: not-allowed; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper); }
+.qty button { width: 38px; height: 40px; border: 0; background: #f4ead6; cursor: pointer; font-size: 1.2rem; }
+.qty input { width: 56px; border: 0; text-align: center; padding: 8px 0; border-radius: 0; }
+.qty-sm button { width: 30px; height: 32px; } .qty-sm input { width: 44px; }
+.pd-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.review { padding: 14px 0; border-bottom: 1px solid var(--line); }
+/* Biểu mẫu đăng sản phẩm của người bán */
+.variant-edit { display: grid; grid-template-columns: 1.4fr 1fr 1fr auto; gap: 8px; align-items: end; padding: 10px; background: #faf3e4; border-radius: 8px; margin-bottom: 8px; }
+.variant-edit .field { margin: 0; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 800px) { .pd-top { grid-template-columns: 1fr; } .variant-edit { grid-template-columns: 1fr 1fr; } }

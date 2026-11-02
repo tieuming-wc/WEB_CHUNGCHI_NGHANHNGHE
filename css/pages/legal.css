@@ -1,0 +1,5 @@
+/* ============================================================
+   FILE: css/pages/legal.css – Trang nội dung tĩnh (điều khoản, quyền riêng tư, giới thiệu, 404)
+   ============================================================ */
+.prose { padding-bottom: 40px; line-height: 1.75; }
+.prose .card { margin: 20px 0; }

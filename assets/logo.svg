@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Logo Bàn Tay Vàng">
+  <!-- Logo: chiếc bình gốm đặt trong lòng bàn tay, nền tròn vàng -->
+  <circle cx="32" cy="32" r="30" fill="#f6e7c1" stroke="#c8922b" stroke-width="3"/>
+  <!-- Thân bình -->
+  <path d="M26 14h12c1 0 1.5.7 1.2 1.6L37.5 21c5 2.2 8 6.5 8 11.5 0 5-3 9-8 10.5h-11c-5-1.500-8-5.500-8-10.500 0-5 3-9.300 8-11.500l-1.700-5.400C24.500 14.700 25 14 26 14z" fill="#a8481f"/>
+  <!-- Hoa văn trên bình -->
+  <path d="M20 31h25" stroke="#f6e7c1" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 35.500h21" stroke="#c8922b" stroke-width="1.600" stroke-dasharray="2 3" stroke-linecap="round"/>
+  <!-- Bàn tay nâng bình -->
+  <path d="M12 47c5 3.500 12 5 20 5s15-1.500 20-5c-3-.5-5 .2-7 1.200-3 1.300-8 2-13 2s-10-.7-13-2c-2-1-4-1.700-7-1.200z" fill="#6f1d18"/>
+</svg>

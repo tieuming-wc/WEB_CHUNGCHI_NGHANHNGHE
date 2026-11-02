@@ -1,0 +1,15 @@
+/* ============================================================
+   FILE: css/pages/cart.css – Giỏ hàng và thanh toán
+   ============================================================ */
+.cart-group { margin-bottom: 16px; }
+.cart-line { display: grid; grid-template-columns: 24px 80px 1fr auto auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.cart-img, .co-line img { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
+.cart-info a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.cart-bar { position: sticky; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; box-shadow: var(--shadow-lg); margin-top: 16px; }
+.checkout-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+.co-line { display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: center; padding: 8px 0; }
+.co-line.tight { grid-template-columns: 48px 1fr auto; } .co-line.tight img { width: 48px; height: 48px; }
+.summary { position: sticky; top: 90px; }
+.sum { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0 0 8px; } .sum dd { margin: 0; text-align: right; }
+.sum-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.25rem; color: var(--clay); border-top: 1px solid var(--line); margin-top: 8px; padding-top: 10px; }
+@media (max-width: 860px) { .checkout-grid { grid-template-columns: 1fr; } .cart-line { grid-template-columns: 70px 1fr; } .cart-line > :first-child { display: none; } }

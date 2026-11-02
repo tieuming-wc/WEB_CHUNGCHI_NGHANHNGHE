@@ -1,0 +1,16 @@
+/* ============================================================
+   FILE: css/pages/home.css – Trang chủ: banner, danh mục, điểm khác biệt
+   ============================================================ */
+.hero { background: linear-gradient(135deg, #f6e7c1 0%, #fbf6ec 60%); border-bottom: 1px solid var(--line); padding: 48px 0; }
+.hero-inner { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: center; }
+.eyebrow { color: var(--clay); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: .82rem; margin-bottom: 8px; }
+.hero h1 { font-size: 2.3rem; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+.lookup-box .row { gap: 8px; flex-wrap: nowrap; } .lookup-box input { flex: 1; min-width: 0; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.cat-tile { display: flex; flex-direction: column; gap: 4px; padding: 20px; border-radius: var(--radius); background: hsl(var(--h, 30) 60% 94%); border: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: transform .15s, box-shadow .15s; }
+.cat-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); color: var(--ink); }
+.cat-icon { font-size: 2.2rem; }
+.diff .card { text-align: center; }
+.continue-card { border-left: 6px solid var(--gold); }
+@media (max-width: 800px) { .hero-inner { grid-template-columns: 1fr; } .hero h1 { font-size: 1.8rem; } }

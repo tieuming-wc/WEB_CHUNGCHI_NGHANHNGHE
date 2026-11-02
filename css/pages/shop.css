@@ -1,0 +1,22 @@
+/* ============================================================
+   FILE: css/pages/shop.css – Trang mua hàng: cột lọc + lưới sản phẩm
+   ============================================================ */
+.shop-layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; padding-bottom: 32px; }
+.filters h2 { font-size: 1rem; margin: 16px 0 8px; font-family: var(--font-body); } .filters h2:first-child { margin-top: 0; }
+.filters .check { margin: 4px 0; }
+.filters input[type=number] { min-width: 0; }
+.filter-actions { gap: 8px; margin-top: 16px; }
+.filters-toggle { display: none; margin-bottom: 10px; }
+#cat-tree .cat { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 8px; border-radius: 6px; font: inherit; cursor: pointer; color: var(--ink); }
+#cat-tree .cat:hover { background: var(--gold-soft); }
+#cat-tree .cat.on { background: var(--clay); color: #fff; }
+#cat-tree .cat.sub { padding-left: 22px; font-size: .94rem; }
+.result-bar { margin-bottom: 14px; align-items: flex-end; }
+.result-bar h1 { margin: 0; font-size: 1.5rem; }
+.sort select { width: auto; margin-left: 6px; }
+@media (max-width: 900px) {
+  .shop-layout { grid-template-columns: 1fr; }
+  .filters-toggle { display: block; }
+  .filters { display: none; } .filters.open { display: block; }
+}
+.cat-list, .cat-list ul { list-style: none; padding: 0; margin: 0 0 8px; }

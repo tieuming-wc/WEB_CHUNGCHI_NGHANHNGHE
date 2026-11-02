@@ -1,0 +1,7 @@
+/* ============================================================
+   FILE: css/pages/seller.css – Kênh người bán (bảng sản phẩm, ô tải ảnh)
+   ============================================================ */
+.seller-content h1.page-title { font-size: 1.5rem; margin-bottom: 14px; }
+.seller-content .card h2 { font-size: 1.2rem; }
+.table-wrap td .co-line { min-width: 220px; }
+.uploader { cursor: pointer; }

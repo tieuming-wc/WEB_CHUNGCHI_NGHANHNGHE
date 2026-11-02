@@ -1,0 +1,15 @@
+/* ============================================================
+   FILE: css/pages/courses.css – Học nghề: thẻ khóa học, mục lục, bài học
+   ============================================================ */
+.course-card h2 { font-size: 1.25rem; }
+.course-card .progress { margin: 10px 0 4px; }
+.acc { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; background: var(--paper); }
+.acc > summary, .chapter { cursor: pointer; padding: 10px 12px; font-weight: 600; }
+.lesson-btn { display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; padding: 8px 12px; border: 0; background: none; font: inherit; cursor: pointer; border-radius: 6px; }
+.lesson-btn:hover { background: var(--gold-soft); }
+.lesson-btn.active { background: var(--gold-soft); font-weight: 600; }
+.lesson-btn[disabled] { color: var(--muted); cursor: not-allowed; }
+.parts { padding-left: 1.2em; }
+#nav { max-height: 75vh; overflow: auto; position: sticky; top: 80px; }
+@media (max-width: 900px) { .course-layout { grid-template-columns: 1fr; } #nav { position: static; max-height: none; } }
+.course-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; margin-top: 16px; }

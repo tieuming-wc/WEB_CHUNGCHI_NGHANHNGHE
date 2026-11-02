@@ -1,0 +1,5 @@
+/* ============================================================
+   FILE: css/pages/admin.css – Trang quản trị
+   ============================================================ */
+#view h2 { font-size: 1.15rem; margin: 22px 0 10px; }
+#view .table td { vertical-align: top; }

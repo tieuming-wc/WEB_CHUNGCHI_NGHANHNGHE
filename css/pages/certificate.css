@@ -1,0 +1,7 @@
+/* ============================================================
+   FILE: css/pages/certificate.css – Đăng ký & tra cứu chứng nhận
+   ============================================================ */
+.cert-card { border: 2px solid var(--gold); background: linear-gradient(180deg, #fffaf0, #fff); text-align: center; }
+.cert-card h2 { letter-spacing: .08em; color: var(--clay); }
+.cert-card .specs { text-align: left; max-width: 420px; margin: 0 auto; }
+.course-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }

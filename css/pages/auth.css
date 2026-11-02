@@ -1,0 +1,10 @@
+/* ============================================================
+   FILE: css/pages/auth.css – Đăng ký/đăng nhập/hồ sơ/cài đặt (thẻ biểu mẫu hẹp)
+   ============================================================ */
+.auth-card { margin: 28px auto; padding: 28px; }
+.auth-card h1 { font-size: 1.6rem; }
+.role-pick { border: 0; padding: 0; margin: 0 0 16px; }
+.role-pick legend { padding: 0; }
+.social { display: grid; gap: 10px; margin-bottom: 14px; }
+.resend { margin: 14px 0; }
+@media (max-width: 520px) { .auth-card { padding: 18px; margin: 12px auto; } }
