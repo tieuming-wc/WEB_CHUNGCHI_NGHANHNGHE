@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/about.html
+   VỀ CHÚNG TÔI – giới thiệu dự án.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở static.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Về chúng tôi – Bàn Tay Vang</title>
+  <meta name="description" content="Sứ mệnh và cách hoạt động của Bàn Tay Vang.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow prose">
+      <h1 class="page-title">Về Bàn Tay Vang</h1>
+
+      <p class="lead">Bàn Tay Vang là dự án khởi nghiệp của sinh viên, kết nối nghệ nhân làng nghề với người yêu đồ thủ công trên cả nước.</p>
+      <h2>Chúng tôi giải quyết vấn đề gì?</h2>
+      <ul>
+        <li>Nghệ nhân giỏi nhưng khó chứng minh tay nghề với người mua ở xa.</li>
+        <li>Người mua khó phân biệt hàng thủ công thật và hàng công nghiệp "mác" thủ công.</li>
+        <li>Người trẻ muốn học nghề nhưng thiếu lộ trình rõ ràng, có người chấm bài.</li>
+      </ul>
+      <h2>Ba trụ cột</h2>
+      <ol>
+        <li><strong>Chợ thủ công:</strong> gian hàng của từng làng nghề, đơn hàng minh bạch từng bước.</li>
+        <li><strong>Chứng nhận tay nghề:</strong> đánh giá và cấp chứng nhận nội bộ có mã tra cứu công khai.</li>
+        <li><strong>Học nghề:</strong> khóa học theo bài, có bài thực hành được chấm điểm.</li>
+      </ol>
+      <div class="alert alert-warn"><strong>Lưu ý trung thực:</strong> chứng nhận trên website là chứng nhận nội bộ của nền tảng, <em>không phải</em> chứng chỉ kỹ năng nghề quốc gia do Nhà nước cấp. Tính năng đấu giá đang được phát triển ("Sắp ra mắt").</div>
+      <p>Liên hệ: <a href="contact.html">trang Liên hệ / Hỗ trợ</a>.</p>
+    </div>
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/static.js"></script>
+</body>
+</html>

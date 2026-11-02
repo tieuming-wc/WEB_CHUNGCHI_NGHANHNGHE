@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/seller-products.html
+   KÊNH NGƯỜI BÁN › SẢN PHẨM – danh sách, lọc, ẩn/hiện/xóa.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở seller-products.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sản phẩm của tôi – Kênh người bán</title>
+  <meta name="description" content="Quản lý sản phẩm của gian hàng.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/seller.css">
+  <link rel="stylesheet" href="../css/pages/orders.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <div class="container seller-shell">
+    <aside id="seller-menu" class="seller-menu" aria-label="Menu người bán"></aside>
+    <section id="main" class="seller-content">
+
+      <div class="row row-between"><h1 class="page-title">Sản phẩm của tôi <span id="total" class="muted small"></span></h1><a class="btn btn-primary" href="seller-product-form.html">+ Đăng sản phẩm</a></div>
+      <div id="tabs" class="tabs"></div>
+      <div class="card filter-bar">
+        <div class="field"><label for="q">Tìm sản phẩm</label><input id="q" type="search" placeholder="Tên hoặc mã sản phẩm"></div>
+        <div class="field"><label for="cat">Danh mục</label><select id="cat"></select></div>
+        <div class="field"><label for="stock">Tồn kho</label><select id="stock"><option value="">Tất cả</option><option value="in">Còn hàng</option><option value="out">Hết hàng</option><option value="made">Làm theo đơn</option></select></div>
+        <div class="field"><label for="sort">Sắp xếp</label><select id="sort"><option value="newest">Mới đăng</option><option value="updated">Cập nhật gần nhất</option><option value="price-asc">Giá thấp → cao</option><option value="price-desc">Giá cao → thấp</option></select></div>
+      </div>
+      <div id="list"></div><div id="pager"></div>
+
+    </section>
+  </div>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/seller-products.js"></script>
+</body>
+</html>

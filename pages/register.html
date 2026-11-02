@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/register.html
+   ĐĂNG KÝ – biểu mẫu 9 trường + vai trò (mua/bán) + CAPTCHA.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở register.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký tài khoản – Bàn Tay Vang</title>
+  <meta name="description" content="Tạo tài khoản người mua hoặc người bán.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container form-narrow">
+      <div class="card auth-card">
+        <h1>Đăng ký tài khoản <span id="site-name" class="sr-only"></span></h1>
+        <p class="muted">Các ô có dấu <span class="req">*</span> là bắt buộc. Mỗi tài khoản chỉ có một vai trò.</p>
+        <form id="register-form" novalidate>
+          <div class="alert alert-error form-alert" hidden role="alert"></div>
+
+          <fieldset class="field role-pick">
+            <legend class="field-label">Bạn muốn đăng ký làm <span class="req">*</span></legend>
+            <div class="radio-row">
+              <label><input type="radio" name="role" value="buyer" checked> 🛍 Người mua</label>
+              <label><input type="radio" name="role" value="seller"> 🏺 Người bán (nghệ nhân / cơ sở)</label>
+            </div>
+          </fieldset>
+
+          <div class="field" id="shop-field" hidden>
+            <label for="shopName">Tên gian hàng <span class="req">*</span></label>
+            <input id="shopName" name="shopName" type="text" maxlength="60" autocomplete="off">
+            <p class="field-error" role="alert"></p>
+          </div>
+
+          <div class="field"><label for="name">Họ và tên <span class="req">*</span></label><input id="name" name="name" type="text" maxlength="60" autocomplete="name"><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120"><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="phone">Số điện thoại <span class="req">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="15"><p class="field-hint">Ví dụ 0912345678. Mỗi số điện thoại chỉ dùng cho một tài khoản.</p><p class="field-error" role="alert"></p></div>
+          <div class="field"><span class="field-label">Ngày sinh <span class="req">*</span></span>
+            <div class="dob-row">
+          <select id="dob-d" aria-label="Ngày sinh"></select>
+          <select id="dob-m" aria-label="Tháng sinh"></select>
+          <select id="dob-y" aria-label="Năm sinh"></select>
+        </div>
+            <p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="gender">Giới tính</label><select id="gender" name="gender"><option value="">Không muốn nêu</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option></select></div>
+          <div class="field">
+          <label for="password">Mật khẩu <span class="req">*</span></label>
+          <div class="input-group"><input id="password" name="password" type="password" autocomplete="new-password"><button type="button" class="toggle" data-toggle-password="#password" aria-label="Hiện mật khẩu">Hiện</button></div>
+          <p class="field-hint">8–64 ký tự. Nên dùng cụm từ dài dễ nhớ; không dùng mật khẩu quá phổ biến.</p><div class="pw-meter" id="pw-meter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <p class="pw-label" id="pw-label" aria-live="polite"></p>
+          <p class="field-error" role="alert"></p>
+        </div>
+          <div class="field">
+          <label for="password2">Nhập lại mật khẩu <span class="req">*</span></label>
+          <div class="input-group"><input id="password2" name="password2" type="password" autocomplete="new-password"><button type="button" class="toggle" data-toggle-password="#password2" aria-label="Hiện mật khẩu">Hiện</button></div>
+          
+          <p class="field-error" role="alert"></p>
+        </div>
+
+          <div class="field" id="captcha"></div>
+
+          <div class="field">
+            <label class="check"><input type="checkbox" id="terms"> <span>Tôi đã đọc và đồng ý với <a href="terms.html" target="_blank">Điều khoản sử dụng</a> và <a href="privacy.html" target="_blank">Chính sách quyền riêng tư</a>.</span></label>
+            <p class="field-error" role="alert"></p>
+          </div>
+          <button id="submit-btn" class="btn btn-primary btn-lg btn-block" type="submit">Tạo tài khoản</button>
+        </form>
+        <p class="center muted">Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/register.js"></script>
+</body>
+</html>

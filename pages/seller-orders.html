@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/seller-orders.html
+   KÊNH NGƯỜI BÁN › ĐƠN HÀNG.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở seller-orders.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đơn hàng – Kênh người bán</title>
+  <meta name="description" content="Xử lý đơn hàng của gian hàng.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/seller.css">
+  <link rel="stylesheet" href="../css/pages/orders.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <div class="container seller-shell">
+    <aside id="seller-menu" class="seller-menu" aria-label="Menu người bán"></aside>
+    <section id="main" class="seller-content">
+
+      <h1 class="page-title">Đơn hàng</h1>
+      <div id="tabs" class="tabs"></div>
+      <div class="card filter-bar">
+        <div class="field"><label for="q">Tìm đơn</label><input id="q" type="search" placeholder="Mã đơn hoặc tên sản phẩm"></div>
+        <div class="field"><label for="pay">Hình thức thanh toán</label><select id="pay"><option value="">Tất cả</option><option value="cod">COD</option><option value="bank">Chuyển khoản</option></select></div>
+        <div class="field"><label for="paystatus">Trạng thái thanh toán</label><select id="paystatus"><option value="">Tất cả</option><option value="unpaid">Chưa thanh toán</option><option value="proof">Chờ xác nhận chứng từ</option><option value="paid">Đã thanh toán</option><option value="refund_pending">Chờ hoàn tiền</option><option value="refunded">Đã hoàn tiền</option></select></div>
+        <div class="field"><label for="sort">Sắp xếp</label><select id="sort"><option value="newest">Mới nhất</option><option value="oldest">Cũ nhất</option><option value="due">Hạn bàn giao gần nhất</option></select></div>
+        <div class="field"><label for="from">Từ ngày</label><input id="from" type="date"></div>
+        <div class="field"><label for="to">Đến ngày</label><input id="to" type="date"></div>
+      </div>
+      <p id="date-err" class="field-error" role="alert"></p>
+      <div id="list"></div><div id="pager"></div>
+
+    </section>
+  </div>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/seller-orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/certificate-register.html
+   ĐĂNG KÝ CHỨNG NHẬN – cần đăng nhập; gửi bill lệ phí để quản trị xác nhận.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở certificate-register.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký chứng nhận – Bàn Tay Vang</title>
+  <meta name="description" content="Đăng ký đánh giá và cấp chứng nhận tay nghề nội bộ.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/certificate.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow">
+      <h1 class="page-title">Đăng ký chứng nhận tay nghề</h1>
+      <div class="alert alert-info">Đây là <strong>chứng nhận nội bộ của nền tảng</strong>, không phải chứng chỉ kỹ năng nghề quốc gia. Sau khi đăng ký và nộp lệ phí, bạn sẽ được xếp lịch đánh giá tại địa điểm đã chọn.</div>
+      <div id="form-wrap">
+        <form id="reg-form" class="card" novalidate>
+          <div class="alert alert-error form-alert" hidden role="alert"></div>
+          <h2>1. Thông tin cá nhân</h2>
+          <div class="field"><label for="fullName">Họ và tên <span class="req">*</span></label><input id="fullName" type="text" maxlength="60"><p class="field-error" role="alert"></p></div>
+          <div class="grid-2">
+            <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" type="email"><p class="field-error" role="alert"></p></div>
+            <div class="field"><label for="phone">Số điện thoại <span class="req">*</span></label><input id="phone" type="tel" inputmode="tel"><p class="field-error" role="alert"></p></div>
+          </div>
+          <div class="field"><span class="field-label">Ngày sinh <span class="req">*</span></span><div class="dob-row">
+          <select id="dob-d" aria-label="Ngày sinh"></select>
+          <select id="dob-m" aria-label="Tháng sinh"></select>
+          <select id="dob-y" aria-label="Năm sinh"></select>
+        </div><p class="field-error" role="alert"></p></div>
+          <div class="grid-2">
+            <div class="field"><label for="gender">Giới tính</label><select id="gender"><option value="">Không muốn nêu</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option></select></div>
+            <div class="field"><label for="cccd">Số CCCD <span class="req">*</span></label><input id="cccd" type="text" inputmode="numeric" maxlength="12"><p class="field-error" role="alert"></p></div>
+          </div>
+          <div class="field"><label for="hometown">Quê quán <span class="req">*</span></label><input id="hometown" type="text" maxlength="150"><p class="field-error" role="alert"></p></div>
+
+          <h2>2. Nghề đăng ký đánh giá</h2>
+          <div class="field"><label for="craft">Nghề <span class="req">*</span></label><select id="craft"></select><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="experience">Kinh nghiệm (không bắt buộc)</label><textarea id="experience" rows="3" maxlength="500"></textarea></div>
+          <div class="field"><span class="field-label">Địa điểm thi <span class="req">*</span></span><div id="locations" class="radio-stack"></div></div>
+
+          <h2>3. Lệ phí</h2>
+          <p>Lệ phí đánh giá: <strong id="fee"></strong>. Chuyển khoản theo thông tin dưới đây rồi tải ảnh bill lên:</p>
+          <div id="bank" class="alert alert-warn"></div>
+          <div class="field"><label for="bill">Ảnh bill chuyển khoản (JPG/PNG, tối đa 5MB) <span class="req">*</span></label><input id="bill" type="file" accept="image/jpeg,image/png"><p id="bill-err" class="field-error" role="alert"></p><div id="bill-prev"></div></div>
+
+          <div class="field"><label class="check"><input type="checkbox" id="terms"> <span>Tôi xác nhận thông tin đúng sự thật và đồng ý các điều khoản đánh giá.</span></label><p class="field-error" role="alert"></p></div>
+          <button id="submit-btn" class="btn btn-primary btn-lg" type="submit">Gửi đăng ký</button>
+        </form>
+        <section class="card"><h2>Đăng ký của tôi</h2><div id="mine"></div></section>
+      </div>
+      <div id="success" class="card center" hidden>
+        <div class="big">✅</div><h2>Đã tiếp nhận đăng ký</h2>
+        <p>Mã đăng ký của bạn: <strong id="success-code"></strong></p>
+        <p>Địa điểm thi: <strong id="success-loc"></strong></p>
+        <p class="muted">Quản trị viên sẽ xác nhận lệ phí và thông báo lịch đánh giá. Theo dõi tại mục "Đăng ký của tôi".</p>
+        <a class="btn btn-primary" href="certificate-lookup.html">Tra cứu chứng nhận</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/certificate-register.js"></script>
+</body>
+</html>

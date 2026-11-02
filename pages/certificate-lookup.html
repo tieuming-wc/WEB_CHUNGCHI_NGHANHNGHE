@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/certificate-lookup.html
+   TRA CỨU CHỨNG NHẬN – công khai, không cần đăng nhập.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở certificate-lookup.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tra cứu chứng nhận – Bàn Tay Vang</title>
+  <meta name="description" content="Xác thực mã chứng nhận tay nghề.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/certificate.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow">
+      <h1 class="page-title">Tra cứu chứng nhận</h1>
+      <form id="lookup-form" class="card" novalidate>
+        <div class="field"><label for="code">Mã chứng nhận</label><input id="code" type="text" placeholder="Ví dụ: BTV-2026-0001" autocomplete="off"><p id="code-err" class="field-error" role="alert"></p></div>
+        <button id="search-btn" class="btn btn-primary" type="submit">Tra cứu</button>
+      </form>
+      <div id="result" aria-live="polite"></div>
+      <p class="muted small">Họ tên được che bớt để bảo vệ quyền riêng tư. Chứng nhận này là chứng nhận nội bộ của nền tảng.</p>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/certificate-lookup.js"></script>
+</body>
+</html>

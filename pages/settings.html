@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/settings.html
+   CÀI ĐẶT – tùy chọn giao diện/nhớ trang lưu theo tài khoản.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở settings.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cài đặt tài khoản – Bàn Tay Vang</title>
+  <meta name="description" content="Chữ lớn, nhớ trang đang xem, xóa lịch sử.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container form-narrow">
+      <div class="card auth-card">
+        <h1>Cài đặt tài khoản</h1>
+        <p class="muted">Các lựa chọn này được lưu theo tài khoản, nên đăng nhập ở máy khác vẫn giữ nguyên.</p>
+        <label class="check setting"><input type="checkbox" id="pref-big"> <span><strong>Chữ lớn hơn</strong><br><span class="muted small">Phù hợp với người lớn tuổi hoặc màn hình nhỏ.</span></span></label>
+        <label class="check setting"><input type="checkbox" id="pref-restore"> <span><strong>Mở lại trang đang xem lần trước khi đăng nhập</strong><br><span class="muted small">Tắt đi nếu muốn luôn vào trang chủ.</span></span></label>
+        <hr>
+        <h2>Quyền riêng tư</h2>
+        <button id="clear-recent" class="btn btn-ghost" type="button">Xóa lịch sử xem gần đây</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/settings.js"></script>
+</body>
+</html>

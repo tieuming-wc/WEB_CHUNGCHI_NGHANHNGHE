@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/shop.html
+   MUA HÀNG – danh sách sản phẩm với tìm kiếm, bộ lọc, sắp xếp, phân trang (trạng thái lưu trên URL).
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở shop.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mua hàng – Bàn Tay Vang</title>
+  <meta name="description" content="Tìm và lọc sản phẩm thủ công từ các làng nghề.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/shop.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container">
+      <nav class="breadcrumb" id="crumb" aria-label="Đường dẫn"></nav>
+      <div class="shop-layout">
+        <!-- Cột lọc bên trái (trên điện thoại thu gọn, bấm nút để mở) -->
+        <aside>
+          <button id="toggle-filters" class="btn btn-ghost btn-block filters-toggle" type="button">⚙ Bộ lọc</button>
+          <div id="filters" class="card filters">
+            <h2>Danh mục</h2>
+            <ul id="cat-tree" class="cat-list"></ul>
+            <form id="filter-form" novalidate>
+              <h2>Khoảng giá (đ)</h2>
+              <div class="row"><input id="f-min" type="number" min="0" placeholder="Từ" aria-label="Giá thấp nhất"><span>–</span><input id="f-max" type="number" min="0" placeholder="Đến" aria-label="Giá cao nhất"></div>
+              <p id="price-err" class="field-error" role="alert"></p>
+              <h2>Chất liệu</h2><div id="f-materials"></div>
+              <h2>Làng nghề</h2><div id="f-villages"></div>
+              <h2>Đánh giá</h2><label class="check"><input type="checkbox" id="f-rating"> <span>Từ 4 sao trở lên</span></label>
+              <h2>Hình thức</h2>
+              <label class="check"><input type="checkbox" name="mode" value="available"> <span>Có sẵn</span></label>
+              <label class="check"><input type="checkbox" name="mode" value="made_to_order"> <span>Làm theo đơn</span></label>
+              <div class="row filter-actions"><button class="btn btn-primary" type="submit">Áp dụng</button><button id="clear-filters" class="btn btn-ghost" type="button">Xóa bộ lọc</button></div>
+            </form>
+          </div>
+        </aside>
+        <section>
+          <div class="row row-between result-bar">
+            <div><h1 id="result-title">Tất cả sản phẩm</h1><p id="result-count" class="muted" role="status"></p></div>
+            <label class="sort">Sắp xếp
+              <select id="sort"><option value="newest">Mới nhất</option><option value="price-asc">Giá thấp → cao</option><option value="price-desc">Giá cao → thấp</option><option value="rating">Đánh giá cao nhất</option></select>
+            </label>
+          </div>
+          <div id="grid"></div>
+          <div id="pager"></div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/shop.js"></script>
+</body>
+</html>

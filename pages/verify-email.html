@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/verify-email.html
+   SAU ĐĂNG KÝ – nhắc xác minh email; có hộp thư giả lập khi ở chế độ thử nghiệm.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở verify-email.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiểm tra hộp thư – Bàn Tay Vang</title>
+  <meta name="description" content="Xác minh email để kích hoạt tài khoản.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container form-narrow">
+      <div class="card auth-card center">
+        <div class="big">📧</div>
+        <h1>Kiểm tra hộp thư của bạn</h1>
+        <p id="sent-msg"></p>
+        <p class="muted small">Chưa thấy thư? Hãy xem cả mục Thư rác (Spam).</p>
+        <div id="demo-mailbox" class="alert alert-info" hidden></div>
+        <form id="resend-form" class="resend" novalidate>
+          <p class="muted small">Gửi lại email xác minh – nhập mật khẩu để xác nhận đúng chủ tài khoản:</p>
+          <div class="field"><label class="sr-only" for="pw">Mật khẩu</label><input id="pw" type="password" placeholder="Mật khẩu" autocomplete="current-password"></div>
+          <button id="resend-btn" class="btn btn-ghost" type="submit">Gửi lại email</button>
+          <p id="resend-msg" class="small" role="status"></p>
+        </form>
+        <a id="to-login" class="btn btn-primary" href="login.html">Về trang đăng nhập</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/verify-email.js"></script>
+</body>
+</html>

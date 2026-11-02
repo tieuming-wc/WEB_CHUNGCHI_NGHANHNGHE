@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/returns.html
+   ĐỔI TRẢ & HOÀN TIỀN.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở static.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đổi trả & hoàn tiền – Bàn Tay Vang</title>
+  <meta name="description" content="Quy định đổi trả và hoàn tiền.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow prose">
+      <h1 class="page-title">Đổi trả và hoàn tiền</h1>
+
+      <h2>Khi nào được trả hàng?</h2>
+      <p>Trong vòng <strong>48 giờ</strong> kể từ khi đơn được đánh dấu "Đã giao", bạn có thể yêu cầu trả hàng nếu: sản phẩm bị vỡ/hỏng khi vận chuyển, sai mẫu/sai phiên bản, hoặc khác mô tả đáng kể. Hãy chụp ảnh làm bằng chứng.</p>
+      <h2>Quy trình</h2>
+      <ol><li>Vào <em>Đơn mua</em> → chi tiết đơn → "Yêu cầu trả hàng", chọn lý do và tải ảnh.</li><li>Người bán xem xét và chấp thuận hoặc từ chối (kèm lý do).</li><li>Nếu chấp thuận, đơn chuyển sang chờ hoàn tiền; quản trị viên xác nhận hoàn tiền.</li></ol>
+      <h2>Hủy đơn</h2>
+      <ul><li>Đơn chưa thanh toán / chờ xác nhận: bạn có thể hủy ngay.</li><li>Đơn đã chờ giao hàng: gửi yêu cầu hủy, người bán chấp thuận.</li><li>Đơn đã bàn giao vận chuyển: không hủy được.</li></ul>
+      <div class="alert alert-info">Với sản phẩm làm theo đơn (đặt riêng), việc hoàn trả chỉ áp dụng khi lỗi thuộc về người bán.</div>
+    </div>
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/static.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/login.html
+   ĐĂNG NHẬP – email/mật khẩu + CAPTCHA, khóa 15 phút sau 5 lần sai, đăng nhập Google/Facebook.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở login.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng nhập – Bàn Tay Vang</title>
+  <meta name="description" content="Đăng nhập để mua hàng, bán hàng và tiếp tục việc đang làm.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container form-narrow">
+      <div class="card auth-card">
+        <h1>Đăng nhập</h1>
+        <div id="page-banner" class="alert" hidden role="status"></div>
+        <form id="login-form" novalidate>
+          <div class="alert alert-error form-alert" hidden role="alert"></div>
+          <div id="lock-box" class="alert alert-warn" hidden role="alert"></div>
+          <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="username" maxlength="120"><p class="field-error" role="alert"></p></div>
+          <div class="field">
+            <label for="password">Mật khẩu <span class="req">*</span></label>
+            <div class="input-group"><input id="password" name="password" type="password" autocomplete="current-password" maxlength="64"><button type="button" class="toggle" data-toggle-password="#password" aria-label="Hiện mật khẩu">Hiện</button></div>
+            <p class="field-error" role="alert"></p>
+          </div>
+          <div class="row row-between"><label class="check"><input type="checkbox" id="remember"> <span>Ghi nhớ đăng nhập 30 ngày</span></label><a href="forgot-password.html">Quên mật khẩu?</a></div>
+          <div class="field" id="captcha"></div>
+          <div id="resend-wrap" class="alert alert-info" hidden><p>Tài khoản chưa được xác minh email.</p><button type="button" id="resend-btn" class="btn btn-ghost btn-sm">Gửi lại email xác minh</button></div>
+          <button id="submit-btn" class="btn btn-primary btn-lg btn-block" type="submit" disabled>Đăng nhập</button>
+        </form>
+        <div class="divider"><span>hoặc</span></div>
+        <div class="social">
+          <button class="btn btn-ghost btn-block" type="button" data-social="google">Đăng nhập bằng Google</button>
+          <button class="btn btn-ghost btn-block" type="button" data-social="facebook">Đăng nhập bằng Facebook</button>
+        </div>
+        <p class="center muted">Chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/login.js"></script>
+</body>
+</html>

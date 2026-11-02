@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/profile.html
+   HỒ SƠ CÁ NHÂN – sửa tên, số điện thoại, ngày sinh, giới tính (email cố định).
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở profile.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hồ sơ của tôi – Bàn Tay Vang</title>
+  <meta name="description" content="Xem và sửa thông tin cá nhân.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container form-narrow">
+      <div class="card auth-card">
+        <h1>Hồ sơ của tôi</h1>
+        <form id="profile-form" novalidate>
+          <div class="alert alert-error form-alert" hidden role="alert"></div>
+          <div class="field"><label for="name">Họ và tên <span class="req">*</span></label><input id="name" type="text" maxlength="60"><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="email">Email (không thể đổi)</label><input id="email" type="email" disabled></div>
+          <div class="field"><label for="phone">Số điện thoại <span class="req">*</span></label><input id="phone" type="tel" inputmode="tel" maxlength="15"><p class="field-error" role="alert"></p></div>
+          <div class="field"><span class="field-label">Ngày sinh <span class="req">*</span></span><div class="dob-row">
+          <select id="dob-d" aria-label="Ngày sinh"></select>
+          <select id="dob-m" aria-label="Tháng sinh"></select>
+          <select id="dob-y" aria-label="Năm sinh"></select>
+        </div><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="gender">Giới tính</label><select id="gender"><option value="">Không muốn nêu</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option></select></div>
+          <dl class="specs"><dt>Vai trò</dt><dd id="role-text"></dd><dt>Ngày tham gia</dt><dd id="joined"></dd></dl>
+          <p><a id="seller-link" href="seller-shop.html" hidden>Sửa thông tin gian hàng →</a></p>
+          <button id="save-btn" class="btn btn-primary btn-lg" type="submit">Lưu thay đổi</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/profile.js"></script>
+</body>
+</html>

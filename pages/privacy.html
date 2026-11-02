@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/privacy.html
+   CHÍNH SÁCH QUYỀN RIÊNG TƯ.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở static.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chính sách quyền riêng tư – Bàn Tay Vang</title>
+  <meta name="description" content="Cách chúng tôi thu thập và bảo vệ dữ liệu cá nhân.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow prose">
+      <h1 class="page-title">Chính sách quyền riêng tư</h1>
+
+      <p class="muted">Bản mẫu cho dự án sinh viên, cần rà soát pháp lý (Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân) trước khi vận hành thương mại.</p>
+      <h2>Dữ liệu chúng tôi thu thập</h2><ul><li>Họ tên, email, số điện thoại, ngày sinh, giới tính (khi đăng ký).</li><li>Địa chỉ giao hàng, đơn hàng, đánh giá.</li><li>Với chứng nhận: số CCCD, quê quán, ảnh bill chuyển khoản.</li><li>Tùy chọn giao diện, giỏ hàng, trang đã xem để khôi phục khi bạn đăng nhập ở thiết bị khác.</li></ul>
+      <h2>Mục đích sử dụng</h2><p>Vận hành tài khoản, xử lý đơn hàng, xác thực chứng nhận và hỗ trợ khách hàng. Chúng tôi không bán dữ liệu cá nhân.</p>
+      <h2>Hiển thị công khai</h2><p>Tên gian hàng, sản phẩm, đánh giá (tên người đánh giá) và thông tin trên chứng nhận (họ tên được che bớt) có thể hiển thị công khai.</p>
+      <h2>Lưu trữ và bảo mật</h2><p>Dữ liệu lưu trên Google Firebase (Firestore/Authentication) với quy tắc truy cập hạn chế. Bạn có thể yêu cầu xem, sửa hoặc xóa dữ liệu qua <a href="contact.html">Liên hệ</a>.</p>
+    </div>
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/static.js"></script>
+</body>
+</html>

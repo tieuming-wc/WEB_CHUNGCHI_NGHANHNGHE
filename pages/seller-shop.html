@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/seller-shop.html
+   KÊNH NGƯỜI BÁN › THÔNG TIN GIAN HÀNG.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở seller-shop.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thông tin gian hàng – Kênh người bán</title>
+  <meta name="description" content="Cập nhật thông tin gian hàng.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/seller.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <div class="container seller-shell">
+    <aside id="seller-menu" class="seller-menu" aria-label="Menu người bán"></aside>
+    <section id="main" class="seller-content">
+
+      <h1 class="page-title">Thông tin gian hàng</h1>
+      <form id="shop-form" class="card" novalidate>
+        <div class="field"><label for="name">Tên gian hàng <span class="req">*</span></label><input id="name" type="text" maxlength="60"><p class="field-error" role="alert"></p></div>
+        <div class="field"><label for="village">Làng nghề</label><select id="village"></select></div>
+        <div class="field"><label for="artisan">Tên nghệ nhân / cơ sở</label><input id="artisan" type="text" maxlength="80"><p class="field-error" role="alert"></p></div>
+        <div class="field"><label for="story">Câu chuyện gian hàng</label><textarea id="story" rows="5" maxlength="1500"></textarea><p class="field-error" role="alert"></p></div>
+        <div class="field"><label for="address">Địa chỉ gửi hàng</label><input id="address" type="text" maxlength="200"></div>
+        <div class="field"><label for="phone">Số điện thoại gian hàng</label><input id="phone" type="tel" maxlength="15"></div>
+        <button id="save-btn" class="btn btn-primary btn-lg" type="submit">Lưu thông tin</button>
+      </form>
+
+    </section>
+  </div>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/seller-shop.js"></script>
+</body>
+</html>

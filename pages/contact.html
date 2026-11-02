@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/contact.html
+   LIÊN HỆ / HỖ TRỢ – cũng là nơi báo cáo sản phẩm vi phạm.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở contact.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liên hệ / Hỗ trợ – Bàn Tay Vang</title>
+  <meta name="description" content="Gửi câu hỏi, phản ánh hoặc báo cáo vi phạm.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/auth.css">
+  <link rel="stylesheet" href="../css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow">
+      <h1 class="page-title">Liên hệ / Hỗ trợ</h1>
+      <p id="support-mail" class="muted"></p>
+      <form id="contact-form" class="card" novalidate>
+        <div class="alert alert-error form-alert" hidden role="alert"></div>
+        <p id="ref" class="alert alert-info" hidden></p>
+        <div class="field"><label for="type">Loại nội dung</label>
+          <select id="type"><option>Câu hỏi chung</option><option>Hỗ trợ đơn hàng</option><option>Liên hệ người bán</option><option>Báo cáo sản phẩm vi phạm</option><option>Báo cáo hàng giả / xâm phạm bản quyền</option><option>Góp ý website</option></select></div>
+        <div class="grid-2">
+          <div class="field"><label for="name">Họ và tên <span class="req">*</span></label><input id="name" type="text" maxlength="60"><p class="field-error" role="alert"></p></div>
+          <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" type="email"><p class="field-error" role="alert"></p></div>
+        </div>
+        <div class="field"><label for="message">Nội dung <span class="req">*</span></label><textarea id="message" rows="6" maxlength="1500"></textarea><p class="field-error" role="alert"></p></div>
+        <div class="field" id="captcha"></div>
+        <button id="submit-btn" class="btn btn-primary btn-lg" type="submit">Gửi</button>
+      </form>
+      <div id="done" class="card center" hidden><div class="big">✅</div><h2>Đã gửi</h2><p>Cảm ơn bạn. Chúng tôi sẽ phản hồi qua email trong thời gian sớm nhất.</p></div>
+    </div>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: pages/terms.html
+   ĐIỀU KHOẢN SỬ DỤNG.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở static.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Điều khoản sử dụng – Bàn Tay Vang</title>
+  <meta name="description" content="Điều khoản sử dụng website.">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow prose">
+      <h1 class="page-title">Điều khoản sử dụng</h1>
+
+      <p class="muted">Cập nhật lần cuối: 2026. Đây là bản điều khoản mẫu cho dự án sinh viên; cần luật sư rà soát trước khi vận hành thương mại.</p>
+      <h2>1. Tài khoản</h2><p>Bạn từ đủ 13 tuổi trở lên, cung cấp thông tin chính xác và tự bảo mật mật khẩu. Mỗi tài khoản có một vai trò (người mua hoặc người bán).</p>
+      <h2>2. Người bán</h2><p>Người bán chịu trách nhiệm về tính trung thực của mô tả, nguồn gốc và quyền sở hữu hình ảnh sản phẩm; không đăng hàng cấm, hàng giả, hàng xâm phạm quyền sở hữu trí tuệ.</p>
+      <h2>3. Mua hàng và thanh toán</h2><p>Đơn chuyển khoản cần được thanh toán trong 24 giờ, quá hạn đơn tự hủy và hoàn lại tồn kho. Nền tảng chưa tích hợp cổng thanh toán, quản trị viên xác nhận thanh toán thủ công.</p>
+      <h2>4. Chứng nhận</h2><p>Chứng nhận là chứng nhận nội bộ của nền tảng, không thay thế chứng chỉ kỹ năng nghề quốc gia.</p>
+      <h2>5. Nội dung vi phạm</h2><p>Chúng tôi có quyền ẩn hoặc khóa sản phẩm vi phạm sau khi nhận báo cáo. Hãy báo cáo tại <a href="contact.html">Liên hệ / Hỗ trợ</a>.</p>
+      <h2>6. Giới hạn trách nhiệm</h2><p>Nền tảng là trung gian kết nối; chúng tôi hỗ trợ giải quyết tranh chấp nhưng không bảo đảm tuyệt đối mọi giao dịch.</p>
+    </div>
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="../js/pages/static.js"></script>
+</body>
+</html>
