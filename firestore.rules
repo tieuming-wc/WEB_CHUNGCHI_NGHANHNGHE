@@ -1,0 +1,94 @@
+// ============================================================
+//  FILE: firestore.rules  –  QUY TẮC BẢO MẬT CƠ SỞ DỮ LIỆU FIRESTORE
+//  Cách dùng: Firebase Console → Firestore Database → tab "Rules" → dán toàn bộ file này → Publish.
+//  Nguyên tắc: mặc định CẤM hết; chỉ mở đúng những gì web cần.
+//  Lưu ý trung thực: web tĩnh không có máy chủ riêng nên một số thao tác (trừ kho, cộng điểm đánh giá)
+//  do trình duyệt thực hiện; quy tắc dưới đây giới hạn chúng ở mức hợp lý nhất có thể.
+// ============================================================
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----- Hàm tiện ích -----
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function me() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && me().role == 'admin'; }
+
+    // ----- Hồ sơ người dùng: riêng tư; không tự đổi vai trò thành admin -----
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid) && request.resource.data.role in ['buyer', 'seller'];
+      allow update: if (isOwner(uid) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    // ----- Gian hàng: công khai đọc, chủ gian hàng sửa -----
+    match /shops/{uid} {
+      allow read: if true;
+      allow write: if isOwner(uid);
+    }
+
+    // ----- Sản phẩm: ai cũng xem được sản phẩm đang hiển thị; người bán quản lý của mình.
+    //       Người khác (người mua) chỉ được đổi tồn kho / phiên bản / điểm đánh giá (do đặt hàng, đánh giá) -----
+    match /products/{id} {
+      allow read: if resource.data.status == 'visible' || isOwner(resource.data.sellerId) || isAdmin();
+      allow create: if signedIn() && request.resource.data.sellerId == request.auth.uid;
+      allow update: if isOwner(resource.data.sellerId) || isAdmin()
+        || (signedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['variants', 'stock', 'ratingSum', 'ratingCount', 'updatedAt', 'soldCount']));
+      allow delete: if isOwner(resource.data.sellerId) || isAdmin();
+    }
+
+    // ----- Đơn hàng: người mua, người bán của đơn đó và quản trị -----
+    match /orders/{id} {
+      allow read: if signedIn() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid || isAdmin());
+      allow create: if signedIn() && request.resource.data.buyerId == request.auth.uid;
+      allow update: if signedIn() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid || isAdmin());
+    }
+
+    // ----- Đánh giá: công khai đọc; người mua đã đăng nhập được viết (mỗi đơn-sản phẩm một đánh giá) -----
+    match /reviews/{id} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // ----- Đăng ký chứng nhận: người đăng ký + quản trị -----
+    match /certRegs/{id} {
+      allow read: if signedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+    }
+
+    // ----- Chứng nhận: ai cũng tra cứu theo mã (get), chỉ quản trị liệt kê / cấp -----
+    match /certificates/{code} {
+      allow get: if true;
+      allow list, write: if isAdmin();
+    }
+
+    // ----- Bài thực hành: học viên nộp/xem bài của mình; quản trị chấm -----
+    match /submissions/{id} {
+      allow read: if signedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+    }
+
+    // ----- Trạng thái dùng (giỏ hàng, yêu thích, tiến độ, trang đang xem): riêng từng tài khoản -----
+    match /userState/{uid} {
+      allow read, write: if isOwner(uid) || isAdmin();
+    }
+
+    // ----- Số điện thoại đã dùng (đảm bảo mỗi số chỉ một tài khoản): chỉ được tạo, không sửa/xóa -----
+    match /phones/{phone} {
+      allow get: if true;
+      allow create: if signedIn();
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // ----- Phản ánh / hỗ trợ: ai cũng gửi được; chỉ quản trị đọc -----
+    match /supportTickets/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

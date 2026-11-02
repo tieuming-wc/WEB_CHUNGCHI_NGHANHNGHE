@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: 404.html
+   404 – GitHub Pages tự dùng file này khi gõ sai địa chỉ.
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở static.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Không tìm thấy trang – Bàn Tay Vang</title>
+  <meta name="description" content="Trang không tồn tại.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/legal.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <div class="container narrow center"><div class="card"><div class="big">🧭</div><h1>Không tìm thấy trang</h1><p>Địa chỉ này không tồn tại hoặc đã được chuyển đi.</p><a class="btn btn-primary" href="/">Về trang chủ</a></div></div>
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="js/pages/static.js"></script>
+</body>
+</html>

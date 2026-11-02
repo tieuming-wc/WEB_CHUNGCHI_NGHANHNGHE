@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+   FILE: index.html
+   TRANG CHỦ – điểm vào chính của website (file chạy đầu tiên trên GitHub Pages).
+   Cấu trúc chung mọi trang: [#site-header] đầu trang → [#main] nội dung → [#site-footer] chân trang.
+   Đầu/chân trang được vẽ bởi js/components/layout.js; logic riêng của trang nằm ở home.js.
+  ============================================================
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bàn Tay Vang – Chợ thủ công và chứng nhận tay nghề làng nghề Việt</title>
+  <meta name="description" content="Nền tảng kết nối nghệ nhân làng nghề với người mua: chợ sản phẩm thủ công, chứng nhận tay nghề và khóa học nghề.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <!-- Phông chữ: Be Vietnam Pro (nội dung) + Lora (tiêu đề) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  <!-- CSS: nền tảng → khung → thành phần → riêng từng trang -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+</head>
+<body>
+  <!-- Liên kết nhảy tới nội dung chính (hỗ trợ bàn phím / trình đọc màn hình) -->
+  <a class="skip-link" href="#main">Bỏ qua, tới nội dung chính</a>
+  <!-- Đầu trang: logo, tìm kiếm, giỏ hàng, tài khoản (do layout.js vẽ) -->
+  <div id="site-header"></div>
+
+  <!-- Nội dung riêng của trang -->
+  <main id="main">
+
+    <!-- ===== Banner: hai lối vào Mua hàng / Bán hàng ===== -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="eyebrow">Làng nghề Việt · Làm bằng tay · Có chứng nhận</p>
+          <h1>Sản phẩm thủ công chính gốc,<br>từ đôi tay nghệ nhân đến nhà bạn</h1>
+          <p class="lead">Mua gốm, mây tre đan, dệt thổ cẩm, đồ gỗ từ gian hàng làng nghề. Nghệ nhân học nghề, nhận chứng nhận tay nghề và bán hàng ngay trên một nền tảng.</p>
+          <div class="hero-cta">
+            <a id="cta-buy" class="btn btn-primary btn-lg" href="#">🛍 Mua hàng</a>
+            <a id="cta-sell" class="btn btn-gold btn-lg" href="#">🏺 Bán hàng</a>
+          </div>
+        </div>
+        <form class="card lookup-box" id="quick-lookup" novalidate>
+          <h2>Tra cứu chứng nhận tay nghề</h2>
+          <p class="muted small">Nhập mã trên chứng nhận (ví dụ BTV-2026-0001) để xác thực.</p>
+          <div class="row">
+            <input id="quick-code" type="text" placeholder="BTV-2026-0001" aria-label="Mã chứng nhận" autocomplete="off">
+            <button class="btn btn-primary" type="submit">Tra cứu</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Tiếp tục nơi bạn đã dừng (chỉ hiện khi đã đăng nhập và có dữ liệu) ===== -->
+    <section id="continue" class="section" hidden></section>
+
+    <!-- ===== Danh mục ===== -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Danh mục nổi bật</h2>
+        <div id="cats" class="cat-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== Sản phẩm mới ===== -->
+    <section class="section alt">
+      <div class="container">
+        <div class="row row-between"><h2 class="section-title">Sản phẩm mới đăng</h2><a href="pages/shop.html">Xem tất cả →</a></div>
+        <div id="latest"><p class="muted">Đang tải sản phẩm…</p></div>
+      </div>
+    </section>
+
+    <!-- ===== Ba điểm khác biệt ===== -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Vì sao chọn Bàn Tay Vang?</h2>
+        <div class="grid-3 diff">
+          <article class="card"><div class="big">🏅</div><h3>Chứng nhận tay nghề</h3><p>Nghệ nhân đăng ký đánh giá, nhận chứng nhận có mã tra cứu công khai để người mua yên tâm về tay nghề.</p><a href="pages/certificate-register.html">Đăng ký chứng nhận</a></article>
+          <article class="card"><div class="big">📚</div><h3>Học nghề trực tuyến</h3><p>Khóa học chia bài từ cơ bản đến nâng cao, có bài thực hành nộp sản phẩm để được chấm điểm.</p><a href="pages/courses.html">Xem khóa học</a></article>
+          <article class="card"><div class="big">🤝</div><h3>Mua bán minh bạch</h3><p>Đơn hàng theo dõi từng bước, hạn thanh toán rõ ràng, đổi trả trong 48 giờ khi sản phẩm không đúng mô tả.</p><a href="pages/returns.html">Chính sách đổi trả</a></article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Chân trang (do layout.js vẽ) -->
+  <div id="site-footer"></div>
+
+  <!-- Mã JS của trang (ES module: chạy sau khi HTML tải xong) -->
+  <script type="module" src="js/pages/home.js"></script>
+</body>
+</html>
