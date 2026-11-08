@@ -16,6 +16,9 @@ export const ROOT = new URL('../../', import.meta.url).href;
 /** Tạo link tới một trang trong thư mục pages/. Ví dụ pageUrl('shop', {q:'gốm'}) */
 export function pageUrl(name, params) {
   const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+  // [BTV-ADMIN] V5.1: admin có thư mục riêng, không nằm cùng pages người dùng.
+  if (name === 'admin') return `${ROOT}admin/index.html${qs}`;
+  if (name === 'admin-operations') return `${ROOT}admin/operations.html${qs}`;
   return `${ROOT}pages/${name}.html${qs}`;
 }
 

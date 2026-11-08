@@ -1,5 +1,7 @@
 # Bàn Tay Vang – Website chợ thủ công + chứng nhận tay nghề + học nghề
 
+> **[BTV-VIDEO]** Phần tính năng phát YouTube trong web đã được bổ sung. Xem `GHI_CHU_THAY_DOI_VIDEO.md` để biết chính xác các file đã thêm/sửa, và `HUONG_DAN_VIDEO_YOUTUBE.md` để gắn link video.
+
 Website tĩnh (HTML + CSS + JavaScript thuần, không cần cài Node) chạy được trên **GitHub Pages**.
 Tài khoản và dữ liệu lưu trên **Firebase** (miễn phí) nên **đăng ký / đăng nhập ở máy nào cũng được**, đăng nhập lại sẽ thấy giỏ hàng, yêu thích, đơn hàng, tiến độ học, trang đang xem dở…
 
@@ -10,7 +12,8 @@ Mọi file code đều có chú thích tiếng Việt ở đầu file và ở t�
 ```
 index.html            Trang chủ (file chính để GitHub Pages chạy)
 404.html              Trang báo lỗi địa chỉ sai
-pages/                Mỗi chức năng một trang HTML (login, register, shop, product, cart, checkout, orders, admin…)
+pages/                Trang người dùng (login, register, shop, product, cart, checkout, orders…)
+admin/                [BTV-ADMIN] V5.1: toàn bộ code riêng trang quản trị (HTML, CSS, JS, test, hướng dẫn)
 css/                  base.css (màu, chữ) · layout.css (khung) · components.css (nút, form…) · pages/ (CSS riêng từng trang)
 js/config/            app-config.js (tên, email hỗ trợ, tài khoản ngân hàng…) · firebase-config.js (dán cấu hình Firebase)
 js/services/          Xử lý dữ liệu: auth, db (Firebase/local), orders, products, cart, certs, courses…
@@ -61,3 +64,40 @@ Mở `js/config/app-config.js`: đổi `BANK` (`BIN`, `ACCOUNT_NO`, `ACCOUNT_NAM
 - **Ảnh lưu thẳng trong cơ sở dữ liệu** (đã nén nhỏ) để không cần Firebase Storage; số lượng lớn nên chuyển sang Storage.
 - **Không có cổng thanh toán / hãng vận chuyển thật**: quản trị viên xác nhận thủ công.
 - Chứng nhận là **chứng nhận nội bộ của nền tảng**, không phải chứng chỉ kỹ năng nghề quốc gia. Điều khoản/Chính sách là bản mẫu, cần luật sư rà soát trước khi kinh doanh thật. Đấu giá mới là trang "Sắp ra mắt".
+
+## 6. Học bằng video YouTube ngay trong Bàn Tay Vàng (mới)
+
+Trang `pages/course-detail.html` đã có giao diện video học **ngay trong website**:
+
+- Bấm **Bắt đầu học** → ẩn mục lục, hiện màn hình YouTube nhúng; không chuyển tab hay trang.
+- Bấm ▶ trên video để phát. Có nút **Thoát video**, **Phóng to**, thanh tiến độ, **Hoàn thành bài học** và **Bài tiếp theo**.
+- Ghi nhận những khoảng thời gian *video thực sự phát* khi trang còn mở. Tạm dừng, chuyển tab, tua qua đoạn video hoặc xem lại một đoạn đã xem **không làm tăng thời lượng đã học**. Khoảng thời gian đã xem được đồng bộ qua `userState.progress` (Firebase nếu đã cấu hình).
+- Hoàn thành lý thuyết khi đã xem **ít nhất 80% video**, không còn bộ đếm demo tăng tốc 60 lần. Nếu bài yêu cầu nộp sản phẩm, phải nộp và được đánh giá đạt theo quy định cũ thì mới hoàn thành bài thực hành.
+
+**Gắn video cho từng bài:** Mở `js/data/courses.js`, tìm bài cần sửa, thêm hoặc thay giá trị `youtubeUrl`:
+
+```js
+{
+  id: 'l1-2',
+  title: 'Bài 1.2: Kỹ thuật xử lý chống mối mọt & sấy nguyên liệu',
+  minutes: 30,
+  level: 'medium',
+  youtubeUrl: 'https://www.youtube.com/watch?v=ID_VIDEO_CUA_BAN',
+  content: [/* ... */]
+}
+```
+
+Nếu có tên video riêng, thêm `videoTitle: 'Bài giảng ...'`. Hỗ trợ link YouTube `watch?v=`, `youtu.be/`, `shorts/`, `live/`, `embed/` hoặc ID 11 ký tự. Chỉ cần lưu file và tải lại website.
+
+**[BTV-VIDEO] SỬA V2:** Đã **bỏ ô dán link YouTube** ra khỏi trang học, kể cả trên `localhost`. Người quản trị nội dung/chỉnh code chỉ thay `youtubeUrl` và `videoTitle` trong `js/data/courses.js`, sau đó lưu file và tải lại trang (`Ctrl+F5`).
+
+**Video bài 1.1 hiện tại:** dùng tư liệu *"Kỹ thuật đan mây tre của người Mnông"* từ bộ sưu tập **Di Sản Kết Nối** (YouTube `https://youtu.be/-GgpGK7gyX8`). Nguồn có mô tả về lựa chọn tre/nứa/mây và quy trình đan, sát chủ đề Bài 1.1 hơn clip phóng sự cũ; tuy nhiên vẫn chỉ là tư liệu tham khảo, chưa phải giáo án hoàn chỉnh. Trước khi phát hành khóa học chính thức, cần kiểm tra quyền nhúng và mức độ phù hợp nội dung. Sau khi có video giảng viên, thay link và xóa `videoReference: true`.
+
+**Lưu ý YouTube:** Chỉ các video được chủ kênh cho phép nhúng mới phát được. Video riêng tư hoặc tắt nhúng sẽ báo lỗi trong web. Màn hình học không tự điều hướng ra ngoài, nhưng các nút/liên kết do chính YouTube hiển thị bên trong player (như logo YouTube) vẫn có thể mở YouTube. Không thể xóa hợp lệ mọi liên kết đó. YouTube cần internet. Đây là giải pháp theo dõi tiến độ bằng trình duyệt, chưa phải cơ chế chống gian lận đủ mạnh để cấp chứng chỉ chính thức; nếu dùng làm đánh giá có giá trị pháp lý, cần cơ chế xác thực phía máy chủ.
+
+Chi tiết: `HUONG_DAN_VIDEO_YOUTUBE.md`.
+
+
+### V5.1 — Quản trị gom trong `admin/`
+
+Trang admin mới: `admin/index.html` (tương tự menu **Trang quản trị**). Xem `admin/README.md` để biết file nào nằm ở đâu. Riêng `firestore.rules` vẫn ở gốc dự án vì nó quản lý phân quyền cho **cả** website. Không được tự cho tài khoản quyền admin ở frontend.

@@ -53,6 +53,13 @@ export async function requireAuth({ roles = null } = {}) {
   const session = await getSession();
   if (!session) { gotoLogin(); return null; }
   if (!session.profile) { goto('pages/login.html?complete=1'); return null; }
+  // [BTV-ADMIN] Frontend guard for suspended accounts; Firestore rules independently enforce access.
+  if (session.profile.accountStatus === 'suspended' || session.profile.accountStatus === 'pending') {
+    const main = document.getElementById('main') || document.body;
+    main.innerHTML = `<section class="container narrow section"><div class="alert alert-error"><strong>${session.profile.accountStatus === 'pending' ? 'Tài khoản đang chờ quản trị xác nhận.' : 'Tài khoản đang tạm khóa.'}</strong> ${esc(session.profile.accountStatus === 'pending' ? 'Bạn có thể xem các trang công khai trong lúc chờ phê duyệt.' : (session.profile.accountNote || 'Liên hệ hỗ trợ để được xem xét.'))}</div><button class="btn btn-primary" id="suspended-out">Đăng xuất</button></section>`;
+    document.getElementById('suspended-out').onclick = async () => { await logout(); resetSessionCache(); goto('pages/login.html?out=1'); };
+    return null;
+  }
 
   if (roles && !roles.includes(session.profile.role)) {
     const need = { buyer: 'người mua', seller: 'người bán', admin: 'quản trị' }[roles[0]] || 'phù hợp';
@@ -61,7 +68,7 @@ export async function requireAuth({ roles = null } = {}) {
       <div class="container narrow section">
         <div class="alert alert-warn" role="alert">
           <strong>Vui lòng đăng xuất và đăng nhập bằng tài khoản ${esc(need)}.</strong>
-          <p>Mỗi tài khoản chỉ có một vai trò (người mua hoặc người bán). Không có công tắc đổi vai trò.</p>
+          <p>Mỗi tài khoản chỉ có một vai trò; quyền quản trị được cấp riêng bởi hệ thống. Không có công tắc đổi vai trò.</p>
         </div>
         <p><button class="btn btn-primary" id="role-logout">Đăng xuất</button>
            <a class="btn btn-ghost" href="${pageUrl('login')}">Về trang đăng nhập</a></p>

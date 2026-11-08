@@ -29,6 +29,8 @@ if (!auth) throw new Error('stop');
 await initLayout({ kind: 'seller', active: qs('id') ? 'products' : 'new', title: qs('id') ? 'Chỉnh sửa sản phẩm' : 'Đăng sản phẩm' });
 const uid = auth.user.uid;
 const shop = await getShop(uid).catch(() => null);
+// [BTV-ADMIN] Seller can draft; requesting publication requires seller approval + product moderation.
+const sellerApproved = auth.profile.sellerStatus === 'approved';
 const root = $('#form-root');
 
 // ----- Trạng thái của form -----
@@ -52,8 +54,9 @@ const catOptions = '<option value="">— Chọn danh mục —</option>' + CATEG
 const E = existing || {};
 root.innerHTML = `
   <h1>${editId ? 'Chỉnh sửa sản phẩm' : 'Đăng sản phẩm mới'}</h1>
-  ${editId ? `<p class="muted">Mã: <strong>${esc(editId)}</strong> · Trạng thái: <span class="badge badge-gold">${{ draft: 'Bản nháp', visible: 'Đang hiển thị', hidden: 'Đã ẩn', locked: 'Bị khóa' }[E.status]}</span></p>` : ''}
+  ${editId ? `<p class="muted">Mã: <strong>${esc(editId)}</strong> · Trạng thái: <span class="badge badge-gold">${{ draft: 'Bản nháp', pending: 'Chờ quản trị duyệt', visible: 'Đang hiển thị', hidden: 'Đã ẩn', locked: 'Bị khóa' }[E.status]}</span></p>` : ''}
   ${locked ? `<div class="alert alert-error"><strong>Sản phẩm đang bị khóa.</strong> ${esc(E.lockReason || '')} Bạn không tự bật bán lại được; hãy liên hệ hỗ trợ.</div>` : ''}
+  ${!sellerApproved ? '<div class="alert alert-warn">Gian hàng chưa được xác minh. Bạn có thể lưu bản nháp; hãy vào Thông tin gian hàng để gửi hồ sơ xét duyệt.</div>' : ''}
   ${E.status === 'visible' ? '<div class="alert alert-info">Đổi giá chỉ áp dụng cho lượt đặt MỚI; đơn đã đặt giữ nguyên giá, phiên bản và số lượng đã chốt.</div>' : ''}
   <form id="pf" novalidate>
    <fieldset ${locked ? 'disabled' : ''}>
@@ -110,7 +113,7 @@ root.innerHTML = `
       <a class="btn btn-ghost" href="${pageUrl('seller-products')}" id="cancel">Hủy</a>
       ${locked ? '' : `<button class="btn btn-ghost" type="button" id="save-draft">${E.status && E.status !== 'draft' ? 'Lưu thay đổi' : 'Lưu bản nháp'}</button>
       <button class="btn btn-ghost" type="button" id="preview">Xem trước</button>
-      ${(!E.status || E.status === 'draft') ? '<button class="btn btn-primary" type="submit" id="publish">Đăng sản phẩm</button>' : ''}`}
+      ${(!E.status || E.status === 'draft' || E.status === 'hidden') ? '<button class="btn btn-primary" type="submit" id="publish">Gửi duyệt sản phẩm</button>' : ''}`}
     </div>
   </form>`;
 $('#cat').value = E.categoryId || '';
@@ -235,7 +238,7 @@ function collect(status) {
 /** Lưu với trạng thái cho trước. Trả về id hoặc null nếu không hợp lệ */
 async function persist(status, strict, btn) {
   if (!validate(strict)) { focusFirstError(root); if (!S.images.length && strict) $('#img-err').scrollIntoView({ behavior: 'smooth', block: 'center' }); return null; }
-  const data = collect(status);
+  const data = collect(existing?.status === 'visible' && status === 'visible' ? 'pending' : status);
   if (JSON.stringify(data.images).length > 900000) { const a = $('#form-alert'); a.hidden = false; a.textContent = 'Tổng dung lượng ảnh quá lớn. Hãy bớt ảnh hoặc chọn ảnh nhỏ hơn.'; return null; }
   setBusy(btn, true, 'Đang xử lý…');                             // khóa nút để không tạo sản phẩm trùng
   try { const id = await saveProduct(editId, data); dirty = false; return id; }
@@ -245,12 +248,13 @@ async function persist(status, strict, btn) {
 // Đăng sản phẩm (đủ điều kiện)
 $('#pf').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const id = await persist('visible', true, $('#publish'));
-  if (id) { flash('Đã đăng sản phẩm.', 'success'); goto(`pages/seller-products.html`); }
+  if (!sellerApproved) { toast('Gian hàng chưa được duyệt. Hãy gửi hồ sơ xác minh trước khi đăng bán.', 'error'); return; }
+  const id = await persist('pending', true, $('#publish'));
+  if (id) { flash('Đã gửi sản phẩm để quản trị xét duyệt. Chưa công khai trên sàn.', 'success'); goto(`pages/seller-products.html`); }
 });
 // Lưu nháp / lưu thay đổi (giữ nguyên trạng thái hiện tại của sản phẩm đã đăng/ẩn)
 $('#save-draft')?.addEventListener('click', async (e) => {
-  const keep = existing && existing.status !== 'draft' ? existing.status : 'draft';
+  const keep = existing && existing.status !== 'draft' ? (existing.status === 'visible' ? 'pending' : existing.status) : 'draft';
   const id = await persist(keep, keep !== 'draft', e.currentTarget);
   if (id) { flash(keep === 'draft' ? 'Đã lưu bản nháp.' : 'Đã lưu thay đổi.', 'success'); goto('pages/seller-products.html'); }
 });

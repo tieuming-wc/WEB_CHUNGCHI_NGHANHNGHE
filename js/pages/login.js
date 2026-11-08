@@ -44,7 +44,7 @@ async function afterLogin(user) {
   const state = await loadState(user.uid);
   const next = safeNext(qs('next'));
   // Ưu tiên: trang đang định vào → trang đã xem gần nhất (nếu bật) → trang chủ
-  const target = next || (state.prefs.restoreLast && state.lastPage) || homeUrl();
+  const target = next || ((await getSession()).profile?.role === 'admin' ? 'admin/index.html' : (state.prefs.restoreLast && state.lastPage) || homeUrl());
   flash(MSG.hello((await getSession()).profile?.name || ''), 'success');
   goto(target.startsWith('http') ? target : target);
 }

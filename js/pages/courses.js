@@ -7,11 +7,13 @@
  */
 import { initLayout } from '../components/layout.js';
 import { COURSES, allLessons } from '../data/courses.js';
+import { loadLessonOverrides } from '../services/course-content.js';
 import { courseProgress } from '../services/courses.js';
 import { $, esc } from '../utils/dom.js';
 import { pageUrl } from '../utils/paths.js';
 
 const session = await initLayout({ active: 'courses', title: 'Học nghề' });
+await loadLessonOverrides();
 
 $('#courses').innerHTML = COURSES.map((c) => {
   const lessons = allLessons(c);

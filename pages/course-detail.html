@@ -33,12 +33,14 @@
   <!-- Nội dung riêng của trang -->
   <main id="main">
 
-    <div class="container">
+    <div class="container course-page-container">
       <div id="course"><p class="muted">Đang tải khóa học…</p></div>
       <div class="course-layout">
         <nav id="nav" class="card" aria-label="Mục lục khóa học"></nav>
         <section id="lesson" class="card"></section>
       </div>
+      <!-- [BTV-VIDEO] MỚI: Khung xem YouTube nội bộ; js/pages/course-detail.js sẽ bật khi bấm "Bắt đầu học". -->
+      <section id="course-theater" class="course-theater" hidden aria-label="Trình phát bài học"></section>
     </div>
 
   </main>

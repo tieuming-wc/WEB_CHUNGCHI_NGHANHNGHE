@@ -74,6 +74,10 @@ function mainNav(active, session) {
   ];
   if (role === 'seller') items.splice(2, 0, ['seller', 'Kênh người bán', pageUrl('seller-products')]);
   else if (!role) items.splice(2, 0, ['seller', 'Bán hàng', pageUrl('seller-products')]);
+  // [BTV-ADMIN] V5.2: Chỉ tài khoản admin thấy nút "Trang quản trị" ngay trên menu website.
+  // Đây là một trang nội bộ thuộc CÙNG website, không phải website admin riêng.
+  // Người mua và người bán không được hiển thị liên kết này.
+  if (role === 'admin') items.push(['admin', '🛡 Trang quản trị', pageUrl('admin')]);
   return `<nav class="main-nav" aria-label="Điều hướng chính"><div class="container"><ul>
     ${items.map(([key, label, href]) => `<li><a href="${href}" class="${key === active ? 'active' : ''}" ${key === active ? 'aria-current="page"' : ''}>${label}</a></li>`).join('')}
   </ul></div></nav>`;

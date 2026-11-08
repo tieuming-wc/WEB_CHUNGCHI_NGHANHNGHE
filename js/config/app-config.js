@@ -48,8 +48,8 @@ export const APP = {
   EXAM_LOCATIONS: ['Hà Nội', 'TP. Hồ Chí Minh'],
 
   // ---------- Khóa học ----------
-  LESSON_TIME_SCALE: 60,       // Bản demo: 1 giây thật = 60 giây bài học (để thử nghiệm điều kiện xem ≥ 80%)
-  WATCH_THRESHOLD: 0.8,        // COND-ATT-01: phải xem tối thiểu 80% thời lượng
+  // [BTV-VIDEO] NGƯỠNG HOÀN THÀNH: 0.8 = xem thật tối thiểu 80% video.
+  WATCH_THRESHOLD: 0.8,        // Xem thực tế tối thiểu 80% video YouTube (không tính đoạn tua/bỏ qua)
   PASS_SCORE: 7.5,             // COND-SUB-02: điểm đạt tối thiểu cho bài thực hành
   MAX_RESUBMIT: 3              // COND-SUB-02: số lần nộp lại tối đa
 };

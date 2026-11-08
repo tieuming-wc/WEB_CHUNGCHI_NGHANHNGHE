@@ -14,6 +14,7 @@ import { backend } from './db.js';
 import { APP } from '../config/app-config.js';
 import { getState, patchState } from './userstate.js';
 import { allLessons } from '../data/courses.js';
+import { mergeWatchedRanges, videoWatchPercent, videoRangesForStorage } from './video-progress.js';
 
 /** Tiến độ của một bài: {watched (giây bài học đã xem), done (bool)} */
 export const lessonProgress = (courseId, lessonId) => getState().progress?.[courseId]?.[lessonId] || { watched: 0, done: false };
@@ -38,18 +39,27 @@ export function courseProgress(course) {
 }
 
 /**
- * Ghi thêm thời gian đã xem (giây bài học). Khi đạt ≥ 80% thời lượng → hoàn thành phần lý thuyết.
- * Bài có phần thực hành (key/hard) cần thêm bài nộp được chấm đạt mới "done" thật sự.
+ * [BTV-VIDEO] ĐÃ SỬA: lưu videoId/videoRanges/videoDuration và tính đủ 80% video.
+ * Lưu tiến độ xem YouTube thực (không tăng tốc demo, không tính đoạn tua).
+ * Quy đổi tỷ lệ VIDEO sang tỷ lệ lý thuyết: video 5 phút thuộc bài 15 phút
+ * thì xem 4/5 phút = 80% phần lý thuyết của bài 15 phút.
  */
-export async function addWatchTime(course, lesson, seconds) {
+export async function saveVideoProgress(course, lesson, videoId, ranges, videoDuration) {
+  const old = lessonProgress(course.id, lesson.id);
+  // [BTV-VIDEO] V3: gộp cả tiến độ đã lưu, phòng trường hợp gửi nhiều lần.
+  const sameVideo = !old.videoId || old.videoId === videoId;
+  const merged = mergeWatchedRanges([...(sameVideo ? (old.videoRanges || []) : []), ...ranges], videoDuration);
+  const percent = videoWatchPercent(merged, videoDuration) / 100;
   const total = lesson.minutes * 60;
-  const cur = lessonProgress(course.id, lesson.id);
-  const watched = Math.min(total, cur.watched + seconds);
+  const watched = Math.min(total, Math.max(sameVideo ? Number(old.watched) || 0 : 0, percent * total));
   const theoryDone = watched / total >= APP.WATCH_THRESHOLD;
   const needsPractical = (lesson.parts || []).some((p) => p.practical);
-  const done = theoryDone && !needsPractical ? true : cur.done;
-  await patchState({ progress: { [course.id]: { [lesson.id]: { watched, theoryDone, done } } } });
-  return { watched, theoryDone, done };
+  const done = (theoryDone && !needsPractical) || (sameVideo && !!old.done);
+  await patchState({ progress: { [course.id]: { [lesson.id]: {
+    // [BTV-VIDEO] V3: Firestore không nhận [[start, end]] (nested arrays).
+    videoId, videoDuration, videoRanges: videoRangesForStorage(merged, videoDuration), watched, theoryDone, done
+  } } } });
+  return { watched, theoryDone, done, percent: watched / total * 100 };
 }
 
 // ---------- Bài nộp thực hành ----------
