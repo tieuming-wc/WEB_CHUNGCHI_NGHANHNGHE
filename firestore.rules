@@ -1,94 +1,160 @@
-// ============================================================
-//  FILE: firestore.rules  –  QUY TẮC BẢO MẬT CƠ SỞ DỮ LIỆU FIRESTORE
-//  Cách dùng: Firebase Console → Firestore Database → tab "Rules" → dán toàn bộ file này → Publish.
-//  Nguyên tắc: mặc định CẤM hết; chỉ mở đúng những gì web cần.
-//  Lưu ý trung thực: web tĩnh không có máy chủ riêng nên một số thao tác (trừ kho, cộng điểm đánh giá)
-//  do trình duyệt thực hiện; quy tắc dưới đây giới hạn chúng ở mức hợp lý nhất có thể.
-// ============================================================
+// [BTV-ADMIN] V5: Quyền máy chủ, bắt buộc Publish vào Firebase Console.
+// Không coi việc ẩn nút / trang là biện pháp bảo mật.
+// Tài khoản admin đầu tiên tạo thủ công trong Firebase Console, KHÔNG đặt mật khẩu admin trong JS.
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // ----- Hàm tiện ích -----
-    function signedIn() { return request.auth != null; }
-    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
-    function me() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
-    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && me().role == 'admin'; }
-
-    // ----- Hồ sơ người dùng: riêng tư; không tự đổi vai trò thành admin -----
-    match /users/{uid} {
-      allow read: if isOwner(uid) || isAdmin();
-      allow create: if isOwner(uid) && request.resource.data.role in ['buyer', 'seller'];
-      allow update: if (isOwner(uid) && request.resource.data.role == resource.data.role) || isAdmin();
-      allow delete: if isOwner(uid) || isAdmin();
-    }
-
-    // ----- Gian hàng: công khai đọc, chủ gian hàng sửa -----
-    match /shops/{uid} {
-      allow read: if true;
-      allow write: if isOwner(uid);
-    }
-
-    // ----- Sản phẩm: ai cũng xem được sản phẩm đang hiển thị; người bán quản lý của mình.
-    //       Người khác (người mua) chỉ được đổi tồn kho / phiên bản / điểm đánh giá (do đặt hàng, đánh giá) -----
-    match /products/{id} {
-      allow read: if resource.data.status == 'visible' || isOwner(resource.data.sellerId) || isAdmin();
-      allow create: if signedIn() && request.resource.data.sellerId == request.auth.uid;
-      allow update: if isOwner(resource.data.sellerId) || isAdmin()
-        || (signedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['variants', 'stock', 'ratingSum', 'ratingCount', 'updatedAt', 'soldCount']));
-      allow delete: if isOwner(resource.data.sellerId) || isAdmin();
-    }
-
-    // ----- Đơn hàng: người mua, người bán của đơn đó và quản trị -----
-    match /orders/{id} {
-      allow read: if signedIn() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid || isAdmin());
-      allow create: if signedIn() && request.resource.data.buyerId == request.auth.uid;
-      allow update: if signedIn() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid || isAdmin());
-    }
-
-    // ----- Đánh giá: công khai đọc; người mua đã đăng nhập được viết (mỗi đơn-sản phẩm một đánh giá) -----
-    match /reviews/{id} {
-      allow read: if true;
-      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isAdmin();
-    }
-
-    // ----- Đăng ký chứng nhận: người đăng ký + quản trị -----
-    match /certRegs/{id} {
-      allow read: if signedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
-      allow update: if isAdmin();
-    }
-
-    // ----- Chứng nhận: ai cũng tra cứu theo mã (get), chỉ quản trị liệt kê / cấp -----
-    match /certificates/{code} {
-      allow get: if true;
-      allow list, write: if isAdmin();
-    }
-
-    // ----- Bài thực hành: học viên nộp/xem bài của mình; quản trị chấm -----
-    match /submissions/{id} {
-      allow read: if signedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
-      allow update: if isAdmin();
-    }
-
-    // ----- Trạng thái dùng (giỏ hàng, yêu thích, tiến độ, trang đang xem): riêng từng tài khoản -----
-    match /userState/{uid} {
-      allow read, write: if isOwner(uid) || isAdmin();
-    }
-
-    // ----- Số điện thoại đã dùng (đảm bảo mỗi số chỉ một tài khoản): chỉ được tạo, không sửa/xóa -----
-    match /phones/{phone} {
-      allow get: if true;
-      allow create: if signedIn();
-      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
-    }
-
-    // ----- Phản ánh / hỗ trợ: ai cũng gửi được; chỉ quản trị đọc -----
-    match /supportTickets/{id} {
-      allow create: if true;
-      allow read, update, delete: if isAdmin();
-    }
+ match /databases/{database}/documents {
+  function signedIn() { return request.auth != null; }
+  function owner(uid) { return signedIn() && request.auth.uid == uid; }
+  function userPath(uid) { return /databases/$(database)/documents/users/$(uid); }
+  function hasUser(uid) { return exists(userPath(uid)); }
+  function currentProfile() { return get(userPath(request.auth.uid)).data; }
+  function active() { return signedIn() && hasUser(request.auth.uid) && currentProfile().get('accountStatus', 'active') == 'active'; }
+  function adminScope(scope) {
+   return active() && currentProfile().role == 'admin'
+     && (!('adminPermissions' in currentProfile()) || scope in currentProfile().adminPermissions);
   }
+  function fullAdmin() { return adminScope('accounts') && adminScope('verification') && adminScope('learning'); }
+  function seller(uid) { return owner(uid) && active() && currentProfile().role == 'seller'; }
+  function approvedSeller(uid) {
+   return hasUser(uid) && get(userPath(uid)).data.get('sellerStatus', 'pending') == 'approved'
+     && get(userPath(uid)).data.get('accountStatus','active') == 'active';
+  }
+
+  match /users/{uid} {
+   allow get: if owner(uid) || adminScope('accounts') || adminScope('verification');
+   allow list: if adminScope('accounts');
+   // Admin role and adminPermissions cannot be self-registered.
+   allow create: if owner(uid) && request.resource.data.uid == uid
+     && request.resource.data.role in ['buyer','seller']
+     && ((request.resource.data.role == 'buyer' && request.resource.data.get('accountStatus','pending') == 'pending')
+       || (request.resource.data.role == 'seller' && request.resource.data.get('accountStatus','active') == 'active'
+         && request.resource.data.get('sellerStatus','pending') == 'pending'))
+     && !('adminPermissions' in request.resource.data);
+   // Owners can only edit ordinary profile fields, never account flags / role.
+   allow update: if (owner(uid) && active()
+     && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+       'name','phone','phoneNorm','dob','gender','lastLoginAt'
+     ]))
+     || (adminScope('accounts') && resource.data.role != 'admin'
+       && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+         'accountStatus','accountNote','accountReviewedAt'
+       ]))
+     || (adminScope('verification') && resource.data.role == 'seller'
+       && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+         'sellerStatus','sellerReviewedAt'
+       ]));
+   // Deleting Firestore profile != deleting Firebase Auth user; leave deletes to Admin SDK later.
+   allow delete: if false;
+  }
+
+  match /shops/{uid} {
+   allow read: if true;
+   allow create: if (seller(uid) && request.resource.data.sellerId == uid
+     && request.resource.data.keys().hasOnly(['sellerId','name','village','artisan','story','address','phone','createdAt']))
+     || adminScope('verification');
+   allow update: if (seller(uid) && request.resource.data.sellerId == uid
+     && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+       'name','village','artisan','story','address','phone','createdAt'
+     ])) || adminScope('verification');
+   allow delete: if false;
+  }
+
+  match /sellerApplications/{uid} {
+   allow get: if owner(uid) || adminScope('verification');
+   allow list: if adminScope('verification');
+   allow create: if seller(uid) && request.resource.data.uid == uid
+     && request.resource.data.status == 'pending'
+     && request.resource.data.keys().hasOnly([
+       'uid','proofType','description','proofLink','status','submittedAt','reviewReason','reviewedAt'
+     ]);
+   allow update: if (seller(uid) && resource.data.status == 'rejected'
+       && request.resource.data.uid == uid && request.resource.data.status == 'pending'
+       && request.resource.data.keys().hasOnly([
+         'uid','proofType','description','proofLink','status','submittedAt','reviewReason','reviewedAt'
+       ])) || (adminScope('verification')
+       && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+         'status','reviewReason','reviewedAt','reviewedBy'
+       ]) && request.resource.data.status in ['approved','rejected']);
+   allow delete: if false;
+  }
+
+  match /products/{id} {
+   allow read: if resource.data.status == 'visible'
+     || (signedIn() && resource.data.sellerId == request.auth.uid)
+     || adminScope('verification');
+   // New products are always private until approval. Drafts allowed pre-verification.
+   allow create: if seller(request.resource.data.sellerId)
+     && request.resource.data.status in ['draft','pending']
+     && (request.resource.data.status == 'draft' || approvedSeller(request.auth.uid));
+   allow update: if adminScope('verification') || (
+      seller(resource.data.sellerId) && resource.data.status != 'locked'
+      && request.resource.data.sellerId == resource.data.sellerId
+      && request.resource.data.status in ['draft','pending','hidden']
+      && (request.resource.data.status != 'pending' || approvedSeller(request.auth.uid))
+    ) || (active() && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+      'variants','stock','ratingSum','ratingCount','updatedAt','soldCount'
+    ]));
+   allow delete: if adminScope('verification') || (
+     seller(resource.data.sellerId) && resource.data.status in ['draft','pending','hidden','visible']
+   );
+  }
+
+  match /courseLessonOverrides/{id} {
+   allow read: if true;
+   allow create, update, delete: if adminScope('learning')
+     && request.resource.data.keys().hasOnly([
+       'title','content','youtubeUrl','videoTitle','videoReferenceNote','videoClipSeconds',
+       'courseId','lessonId','updatedAt'
+     ]);
+  }
+
+  match /orders/{id} {
+   allow read: if signedIn() && (
+     resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid
+     || adminScope('verification'));
+   allow create: if active() && currentProfile().role == 'buyer' && request.resource.data.buyerId == request.auth.uid;
+   allow update: if active() && (
+     resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid
+     || adminScope('verification'));
+  }
+  match /reviews/{id} {
+   allow read: if true;
+   allow create: if active() && currentProfile().role == 'buyer' && request.resource.data.userId == request.auth.uid;
+   allow update, delete: if adminScope('verification');
+  }
+  match /certRegs/{id} {
+   allow read: if (signedIn() && resource.data.userId == request.auth.uid) || adminScope('verification');
+   allow create: if active() && request.resource.data.userId == request.auth.uid;
+   allow update: if adminScope('verification');
+  }
+  match /certificates/{code} {
+   allow get: if true;
+   allow list, write: if adminScope('verification');
+  }
+  match /submissions/{id} {
+   allow read: if (signedIn() && resource.data.userId == request.auth.uid) || adminScope('learning');
+   allow create: if active() && request.resource.data.userId == request.auth.uid;
+   allow update: if adminScope('learning');
+  }
+  match /userState/{uid} {
+   allow read: if owner(uid) || adminScope('learning');
+   allow write: if (owner(uid) && active()) || adminScope('learning');
+  }
+  match /phones/{phone} {
+   allow get: if true;
+   allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+   allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+  }
+  match /supportTickets/{id} {
+   allow create: if true;
+   allow read, update, delete: if adminScope('accounts');
+  }
+  match /adminAudit/{id} {
+   allow create: if (adminScope('accounts') || adminScope('verification') || adminScope('learning'))
+       && request.resource.data.actorId == request.auth.uid;
+   allow read: if adminScope('accounts');
+   allow update, delete: if false;
+  }
+ }
 }

@@ -10,6 +10,7 @@
 import { initLayout } from '../components/layout.js';
 import { requireAuth } from '../services/session.js';
 import { backend } from '../services/db.js';
+import { submitSellerApplication } from '../../admin/js/admin-workflows.js';
 import { toast } from '../components/toast.js';
 import { VILLAGES } from '../data/villages.js';
 import { validateText } from '../utils/validators.js';
@@ -39,4 +40,27 @@ $('#shop-form').addEventListener('submit', async (e) => {
     toast('Đã lưu thông tin gian hàng. Sản phẩm đăng sau sẽ dùng tên mới.', 'success');
   } catch (err) { console.error(err); toast('Có sự cố, vui lòng thử lại.', 'error'); }
   setBusy(btn, false);
+});
+
+// [BTV-ADMIN] Hồ sơ xét duyệt chỉ chủ gian hàng và quản trị xem được.
+const application = await backend.get('sellerApplications', uid).catch(() => null);
+const sellerStatus = auth.profile.sellerStatus || 'pending';
+$('#verify-status').textContent = sellerStatus === 'approved' ? '✅ Gian hàng đã được xác minh.' :
+  application?.status === 'pending' ? '⏳ Hồ sơ đang chờ quản trị xem xét.' :
+  application?.status === 'rejected' ? `❌ Hồ sơ chưa được chấp thuận: ${application.reviewReason || 'Vui lòng bổ sung minh chứng.'}` :
+  'Chưa được duyệt bán hàng. Gửi hồ sơ để quản trị kiểm tra trước khi đăng sản phẩm.';
+if (sellerStatus === 'approved' || application?.status === 'pending') $('#verify-form').hidden = true;
+$('#verify-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const proofType = $('#proof-type').value;
+  const description = $('#proof-note').value.trim();
+  const proofLink = $('#proof-link').value.trim();
+  if (!proofType || description.length < 20 || (proofLink && !/^https:\/\/[^\s]+$/i.test(proofLink))) {
+    toast('Chọn loại minh chứng, nhập mô tả tối thiểu 20 ký tự và link HTTPS hợp lệ (nếu có).', 'error'); return;
+  }
+  const btn = $('#verify-submit'); setBusy(btn, true);
+  try { await submitSellerApplication(uid, { proofType, description, proofLink });
+    toast('Đã gửi hồ sơ, đang chờ kiểm duyệt.', 'success'); $('#verify-form').hidden = true;
+    $('#verify-status').textContent = '⏳ Hồ sơ đang chờ quản trị xem xét.';
+  } catch(err) { console.error(err); toast('Không gửi được hồ sơ xác minh.', 'error'); setBusy(btn, false); }
 });

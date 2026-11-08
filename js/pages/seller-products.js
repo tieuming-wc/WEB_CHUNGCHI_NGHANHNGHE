@@ -23,8 +23,8 @@ const auth = await requireAuth({ roles: ['seller'] });
 if (!auth) throw new Error('stop');
 await initLayout({ kind: 'seller', active: 'products', title: 'Sản phẩm của tôi' });
 
-const STATUS_LABEL = { visible: 'Đang hiển thị', hidden: 'Đã ẩn', draft: 'Bản nháp', locked: 'Bị khóa' };
-const STATUS_BADGE = { visible: 'badge-green', hidden: 'badge-gray', draft: 'badge-gold', locked: 'badge-red' };
+const STATUS_LABEL = { visible: 'Đang hiển thị', pending: 'Chờ quản trị duyệt', hidden: 'Đã ẩn', draft: 'Bản nháp', locked: 'Bị khóa' };
+const STATUS_BADGE = { visible: 'badge-green', pending: 'badge-gold', hidden: 'badge-gray', draft: 'badge-gold', locked: 'badge-red' };
 let all = [], tab = 'all', q = '', cat = '', stock = '', sort = 'newest', page = 1;
 
 $('#cat').innerHTML = '<option value="">Tất cả danh mục</option>' + CATEGORIES.map((c) => `<option value="${c.id}">${esc(c.name)} (gồm các nhóm con)</option>` + c.children.map((k) => `<option value="${k.id}">&nbsp;&nbsp;— ${esc(k.name)}</option>`).join('')).join('');
@@ -62,8 +62,8 @@ function render() {
       <td class="actions"><a class="btn btn-ghost btn-sm" href="${pageUrl('seller-product-form', { id: p.id })}">Sửa</a>
         <a class="btn btn-ghost btn-sm" href="${pageUrl('product', { id: p.id, preview: 1 })}">Xem trước</a>
         ${p.status === 'visible' ? `<button class="btn btn-ghost btn-sm" data-hide="${p.id}">Ẩn</button>` : ''}
-        ${p.status === 'hidden' ? `<button class="btn btn-ghost btn-sm" data-show="${p.id}">Hiển thị lại</button>` : ''}
-        <button class="btn btn-danger btn-sm" data-del="${p.id}">Xóa</button></td></tr>`).join('')}</tbody></table></div>`;
+        ${p.status === 'hidden' ? `<button class="btn btn-ghost btn-sm" data-show="${p.id}">Gửi duyệt lại</button>` : ''}
+        ${p.status === 'locked' ? '' : `<button class="btn btn-danger btn-sm" data-del="${p.id}">Xóa</button>`}</td></tr>`).join('')}</tbody></table></div>`;
   $('#pager').innerHTML = paginationHtml(pg.page, pg.pages);
 }
 
@@ -81,7 +81,8 @@ on(document, 'click', '[data-hide]', async (e, el) => { await setStatus(el.datas
 on(document, 'click', '[data-show]', async (e, el) => {
   const p = all.find((x) => x.id === el.dataset.show);
   if (!p.price && !p.variants?.length || !p.desc || !p.images?.length) { toast('Sản phẩm chưa đủ thông tin hợp lệ để hiển thị. Hãy bấm Sửa để bổ sung.', 'error'); return; }
-  await setStatus(p.id, 'visible'); toast('Sản phẩm đã hiển thị lại.', 'success'); await load();
+  if (auth.profile.sellerStatus !== 'approved') { toast('Gian hàng chưa được duyệt.', 'error'); return; }
+  await setStatus(p.id, 'pending'); toast('Đã gửi quản trị duyệt lại sản phẩm.', 'success'); await load();
 });
 on(document, 'click', '[data-del]', async (e, el) => {
   const p = all.find((x) => x.id === el.dataset.del);

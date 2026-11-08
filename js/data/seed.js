@@ -55,7 +55,7 @@ export async function seedLocalData({ set, write, read, hashPassword, newToken }
     const uid = 'demo_' + role + '_' + email.split('@')[0];
     uids[email.split('@')[0]] = uid;
     auth[email] = { uid, email, salt, hash: await hashPassword(DEMO_PASSWORD, salt), verified: true, pwVersion: 1, createdAt: Date.now() };
-    await set('users', uid, { uid, name, email, role, phone: '', phoneNorm: '', gender: '', dob: '2000-01-01', createdAt: Date.now() });
+    await set('users', uid, { uid, name, email, role, accountStatus: 'active', ...(role === 'seller' ? { sellerStatus: 'approved' } : {}), phone: '', phoneNorm: '', gender: '', dob: '2000-01-01', createdAt: Date.now() });
   }
   write('auth', auth);
 

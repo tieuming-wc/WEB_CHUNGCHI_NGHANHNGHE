@@ -13,3 +13,64 @@
 #nav { max-height: 75vh; overflow: auto; position: sticky; top: 80px; }
 @media (max-width: 900px) { .course-layout { grid-template-columns: 1fr; } #nav { position: static; max-height: none; } }
 .course-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; margin-top: 16px; }
+
+/* [BTV-VIDEO] CSS MỚI: Trình phát toàn trang, tiến độ, nút hoàn thành và màn chúc mừng. */
+/* ===== Màn hình học YouTube nhúng — giống luồng học video (không rời web) ===== */
+.course-layout[hidden], .course-theater[hidden] { display: none !important; }
+.course-page-container { max-width: 1420px; }
+.course-layout { max-width: 1180px; margin-inline: auto; }
+.course-theater { min-height: 70vh; padding-bottom: 24px; }
+.video-lesson-topbar { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.video-exit { flex: 0 0 auto; border: 1px solid var(--line); background: var(--paper); border-radius: 9px; padding: 11px 14px; font: inherit; font-weight: 700; cursor: pointer; color: var(--ink); }
+.video-exit:hover { background: var(--gold-soft); }
+.video-lesson-heading { flex: 1; display: flex; flex-direction: column; line-height: 1.4; min-width: 0; }
+.video-lesson-heading > span { font-size: .78rem; color: var(--muted); }
+.video-lesson-heading > strong { font-size: 1.03rem; overflow-wrap: anywhere; }
+.video-lesson-pill { flex: 0 0 auto; font-size: .83rem; border: 1px solid #a7deca; background: #e1f5ed; color: #236346; border-radius: 999px; padding: 7px 14px; font-weight: 700; }
+.video-welcome { display: flex; gap: 12px; align-items: center; background: #f5f6ff; border: 1px solid #e1e5f7; margin: 18px 0; padding: 10px 16px; border-radius: 12px; font-weight: 600; }
+.video-welcome-icon { background: #665bcc; color: #fff; font-size: 1.25rem; width: 38px; height: 38px; display: inline-grid; place-items: center; border-radius: 50%; }
+.video-screen { padding: 20px; border-radius: 18px; }
+.video-screen-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 13px; margin-bottom: 18px; }
+.video-screen-head h2 { font: 700 1.16rem var(--font-body); margin: 0; }
+.video-expand { border: 1px solid var(--line); border-radius: 9px; width: 42px; height: 42px; background: #fff; color: var(--ink); font-size: 1.45rem; flex: 0 0 auto; cursor: pointer; }
+.video-expand:hover { background: var(--gold-soft); }
+.video-demo-note { font-size: .79rem; color: #805012; margin: 0 0 12px; }
+.youtube-frame { width: 100%; position: relative; aspect-ratio: 16 / 9; min-height: 240px; background: #060b1f; border-radius: 12px; overflow: hidden; }
+.youtube-player-host, .youtube-frame iframe { position: absolute; inset: 0; display: block; border: 0; width: 100% !important; height: 100% !important; }
+.video-loading { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; padding: 16px; text-align: center; pointer-events: none; }
+.video-screen > .alert { margin-top: 14px; }
+.video-learning-footer { position: sticky; z-index: 15; bottom: 0; background: rgba(255, 253, 249, .98); border: 1px solid var(--line); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 16px 22px; margin-top: 14px; box-shadow: 0 -4px 20px rgba(31, 23, 15, .07); }
+.video-learning-progress { width: 50%; min-width: 260px; }
+.video-learning-percent { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: .8rem; color: #50556a; margin-bottom: 7px; }
+.video-learning-footer .progress { background: #f0e3c4; height: 12px; }
+.video-learning-footer .progress > span { background: linear-gradient(90deg, #c99532, #edcc7a); }
+.video-learning-progress .small { font-size: .76rem; margin: 5px 0 0; }
+.video-finish-btn { border: none; background: linear-gradient(135deg, #6967dd, #5149ba); color: #fff; padding: 15px 28px; border-radius: 12px; font: 700 .95rem var(--font-body); white-space: nowrap; cursor: pointer; transition: transform .16s, filter .16s; }
+.video-finish-btn:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.video-finish-btn:disabled { opacity: .48; cursor: not-allowed; }
+.video-success-overlay { position: fixed; z-index: 500; inset: 0; padding: 18px; display: grid; place-items: center; background: rgba(30, 30, 56, .46); backdrop-filter: blur(6px); }
+.video-success-modal { width: min(440px, 100%); border-radius: 20px; padding: 28px 22px; text-align: center; background: #fff; box-shadow: 0 16px 50px rgba(0, 0, 0, .19); }
+.video-success-confetti { font-size: 1.5rem; letter-spacing: 8px; }
+.video-success-medal { font-size: 3rem; margin: 8px 0; }
+.video-success-modal h2 { font: 700 1.8rem var(--font-body); margin-bottom: 10px; }
+.video-success-modal p { font-size: .89rem; color: #50556a; }
+.video-success-score { display: inline-block; background: #ecf7f0; color: #297747 !important; border-radius: 10px; font-weight: 700; padding: 10px 18px; }
+.video-success-actions { display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+#nav .lesson-btn.on { background: var(--gold-soft); font-weight: 700; }
+#nav .lesson-btn { align-items: start; }
+#nav .lesson-btn > span:first-child { min-width: 0; flex: 1; }
+#nav .lesson-btn > span:last-child { flex: 0 0 105px; font-size: .74rem; line-height: 1.45; }
+@media (max-width: 760px) {
+  .video-lesson-topbar { flex-wrap: wrap; gap: 10px; }
+  .video-lesson-heading { order: 3; flex-basis: 100%; }
+  .video-lesson-pill { margin-left: auto; }
+  .video-screen { padding: 10px; }
+  .video-screen-head h2 { font-size: 1rem; }
+  .youtube-frame { min-height: 200px; }
+  .video-learning-footer { flex-wrap: wrap; padding: 12px; gap: 10px; }
+  .video-learning-progress { width: 100%; min-width: 0; }
+  .video-finish-btn { width: 100%; }
+}
+
+/* Quy tắc mobile đặt cuối để không bị layout desktop ghi đè. */
+@media (max-width: 900px) { .course-layout { grid-template-columns: 1fr; } #nav { position: static; max-height: 320px; } }

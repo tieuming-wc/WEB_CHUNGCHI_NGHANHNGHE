@@ -1,0 +1,23 @@
+/* ============================================================
+   FILE: admin/css/admin.css – Trang quản trị
+   ============================================================ */
+#view h2 { font-size: 1.15rem; margin: 22px 0 10px; }
+#view .table td { vertical-align: top; }
+/* [BTV-ADMIN] V5. Giữ đúng giao diện riêng, không đưa menu sàn mua bán vào khu quản trị */
+body:has(.admin-shell) #site-footer { display:none !important; }
+.admin-shell{max-width:1400px;padding-block:34px 70px}
+.admin-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:26px}
+.admin-heading h1{margin:3px 0 10px;font-size:clamp(1.8rem,3vw,2.7rem)}
+.admin-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 25px}
+.admin-intro{margin-bottom:20px}
+.admin-intro h2{font-size:1.4rem;margin:0 0 10px}
+.admin-course{margin:18px 0}
+.admin-course h3{margin:0 0 14px}
+.admin-lesson{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:13px 0;border-top:1px solid var(--border, #e3d5bd)}
+.admin-lesson .btn{flex-shrink:0}
+.admin-edit-form{max-width:900px;margin-top:20px}
+.admin-edit-form textarea{width:100%}
+.admin-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+#admin-content .table td{max-width:470px;overflow-wrap:anywhere;vertical-align:top}
+#admin-content .table td p{margin:4px 0}
+@media(max-width:720px){.admin-heading{display:block}.admin-heading>a{margin-top:10px}.admin-lesson{display:block}.admin-lesson .btn{margin-top:9px}}

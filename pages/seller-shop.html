@@ -46,6 +46,21 @@
         <div class="field"><label for="phone">Số điện thoại gian hàng</label><input id="phone" type="tel" maxlength="15"></div>
         <button id="save-btn" class="btn btn-primary btn-lg" type="submit">Lưu thông tin</button>
       </form>
+      <!-- [BTV-ADMIN] Minh chứng riêng tư, không hiển thị trên trang gian hàng công khai -->
+      <section class="card" id="verify-card" style="margin-top:20px">
+        <h2>🛡️ Xác minh gian hàng</h2>
+        <p id="verify-status" class="muted">Đang tải trạng thái…</p>
+        <form id="verify-form">
+          <div class="field"><label for="proof-type">Loại minh chứng</label>
+            <select id="proof-type" required><option value="">Chọn loại minh chứng</option><option>Giấy đăng ký kinh doanh / hộ kinh doanh</option><option>Xác nhận hợp tác xã hoặc làng nghề</option><option>Hồ sơ nghệ nhân, sản phẩm và xưởng thực tế</option><option>Giấy tờ khác phù hợp</option></select></div>
+          <div class="field"><label for="proof-note">Mô tả minh chứng và thông tin đối chiếu</label>
+            <textarea id="proof-note" rows="4" maxlength="800" required placeholder="Mô tả cơ sở, địa điểm sản xuất, phương thức liên hệ xác minh..."></textarea></div>
+          <div class="field"><label for="proof-link">Đường dẫn minh chứng (tùy chọn)</label>
+            <input id="proof-link" type="url" placeholder="https://..." maxlength="500">
+            <p class="small muted">Chỉ chia sẻ tài liệu mà bạn có quyền cung cấp. Không nhập số CCCD, ảnh giấy tờ định danh hay thông tin nhạy cảm vào ô này.</p></div>
+          <button class="btn btn-primary" type="submit" id="verify-submit">Gửi yêu cầu xác minh</button>
+        </form>
+      </section>
 
     </section>
   </div>

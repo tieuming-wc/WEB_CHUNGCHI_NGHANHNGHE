@@ -69,7 +69,8 @@ export async function register({ name, email, phone, dob, gender, password, role
     }
     await backend.set('users', user.uid, {
       uid: user.uid, name: name.trim().replace(/\s+/g, ' '), email: email.trim().toLowerCase(),
-      phone: phone || '', phoneNorm, dob, gender: gender || '', role, createdAt: Date.now()
+      phone: phone || '', phoneNorm, dob, gender: gender || '', role,
+      accountStatus: role === 'buyer' ? 'pending' : 'active', ...(role === 'seller' ? { sellerStatus: 'pending' } : {}), createdAt: Date.now()
     });
     // Người bán: tạo luôn gian hàng công khai (chỉ chứa thông tin được phép hiển thị)
     if (role === 'seller') {
@@ -143,7 +144,8 @@ export async function loginSocial(provider) {
 export async function completeSocialProfile(user, { role, shopName }) {
   await backend.set('users', user.uid, {
     uid: user.uid, name: user.displayName || user.email.split('@')[0], email: user.email,
-    phone: '', phoneNorm: '', dob: '', gender: '', role, createdAt: Date.now()
+    phone: '', phoneNorm: '', dob: '', gender: '', role,
+    accountStatus: role === 'buyer' ? 'pending' : 'active', ...(role === 'seller' ? { sellerStatus: 'pending' } : {}), createdAt: Date.now()
   });
   if (role === 'seller') {
     await backend.set('shops', user.uid, { sellerId: user.uid, name: shopName, village: '', artisan: user.displayName || '', story: '', address: '', phone: '', createdAt: Date.now() });

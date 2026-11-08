@@ -39,7 +39,17 @@ export const getState = () => cache || DEFAULT_STATE();
 /** Cập nhật một phần trạng thái (vừa cập nhật bộ nhớ, vừa ghi lên máy chủ) */
 export async function patchState(patch) {
   if (!cacheUid) return;                                        // chưa đăng nhập thì bỏ qua
-  cache = { ...cache, ...patch, prefs: { ...cache.prefs, ...(patch.prefs || {}) } };
+  // [BTV-VIDEO] ĐÃ SỬA: merge progress theo từng khóa/bài, tránh ghi đè cache của bài khác.
+  // Trộn riêng progress theo course/lesson (không làm mất tiến độ các bài khác trong cache).
+  const progress = { ...(cache.progress || {}) };
+  for (const [courseId, incoming] of Object.entries(patch.progress || {})) {
+    const oldCourse = progress[courseId] || {};
+    progress[courseId] = { ...oldCourse };
+    for (const [lessonId, data] of Object.entries(incoming || {})) {
+      progress[courseId][lessonId] = { ...(oldCourse[lessonId] || {}), ...data };
+    }
+  }
+  cache = { ...cache, ...patch, progress, prefs: { ...cache.prefs, ...(patch.prefs || {}) } };
   await backend.set('userState', cacheUid, patch, { merge: true });
 }
 
